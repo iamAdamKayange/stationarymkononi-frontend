@@ -39,6 +39,10 @@ export default function StationeryDashboardPage() {
   const [newProductName, setNewProductName] = useState('');
   const [newProductPrice, setNewProductPrice] = useState('');
   const [newProductCatId, setNewProductCatId] = useState('');
+  const [newProductDesc, setNewProductDesc] = useState('');
+  const [newProductImages, setNewProductImages] = useState<string[]>([]);
+  const [imageUrlInput, setImageUrlInput] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
 
   const loadData = async () => {
@@ -97,21 +101,73 @@ export default function StationeryDashboardPage() {
     }
   };
 
+  const handleAddImage = (urlToAdd?: string) => {
+    const url = urlToAdd || imageUrlInput.trim();
+    if (!url) return;
+    if (newProductImages.includes(url)) {
+      toast.error('Picha hii tayari imewekwa');
+      return;
+    }
+    setNewProductImages((prev) => [...prev, url]);
+    setImageUrlInput('');
+    toast.success(`Picha imeongezwa! (${newProductImages.length + 1}/3)`);
+  };
+
+  const handleImageFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = (await api.post('/documents/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })) as { data: { fileUrl: string } };
+
+      if (res?.data?.fileUrl) {
+        handleAddImage(res.data.fileUrl);
+      }
+    } catch (err) {
+      toast.error('Kushindwa kupakia picha');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleRemoveImage = (indexToRemove: number) => {
+    setNewProductImages((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+  };
+
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (newProductImages.length < 3) {
+      toast.error(
+        `Bidhaa inahitaji angalau picha 3. Umeweka picha ${newProductImages.length} tu.`
+      );
+      return;
+    }
+
     try {
       await api.post('/products', {
         name: newProductName,
+        description: newProductDesc.trim() || undefined,
         price: parseFloat(newProductPrice),
         categoryId: newProductCatId,
+        images: newProductImages,
+        imageUrl: newProductImages[0],
         stockQuantity: 100,
         isAvailable: true,
       });
 
-      toast.success('Bidhaa imeongezwa dukani kwako! 🎉');
+      toast.success('Bidhaa imeongezwa dukani kwako na picha 3+! 🎉');
       setProductModalOpen(false);
       setNewProductName('');
       setNewProductPrice('');
+      setNewProductDesc('');
+      setNewProductImages([]);
       loadData();
     } catch (err) {
       toast.error((err as Error).message || 'Kushindwa kuongeza bidhaa');
@@ -410,7 +466,18 @@ export default function StationeryDashboardPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Bei (TZS)</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">Maelezo ya Ziada (Hiari)</label>
+            <input
+              type="text"
+              value={newProductDesc}
+              onChange={(e) => setNewProductDesc(e.target.value)}
+              placeholder="mfano: Pakiti ya kalamu 50, au daftari lenye kurasa 288"
+              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs bg-white"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">Bei ya Bidhaa (TZS)</label>
             <input
               type="number"
               value={newProductPrice}
@@ -421,12 +488,122 @@ export default function StationeryDashboardPage() {
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-3">
+          {/* Mandatory Minimum 3 Product Images Section */}
+          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                <ShoppingBag className="w-3.5 h-3.5 text-brand-600" />
+                Picha za Bidhaa (Angalau Picha 3 Zinahitajika) *
+              </label>
+              <Badge variant={newProductImages.length >= 3 ? 'success' : 'warning'} size="sm">
+                {newProductImages.length} / 3 Picha
+              </Badge>
+            </div>
+
+            {/* Thumbnail Preview Grid */}
+            {newProductImages.length > 0 && (
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+                {newProductImages.map((imgUrl, idx) => (
+                  <div
+                    key={idx}
+                    className="relative w-full h-20 rounded-xl overflow-hidden border-2 border-brand-500/60 shadow-xs group bg-white"
+                  >
+                    <img src={imgUrl} alt={`Product ${idx + 1}`} className="w-full h-full object-cover" />
+                    <span className="absolute top-1 left-1 bg-black/60 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
+                      #{idx + 1}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(idx)}
+                      className="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-md opacity-90 hover:opacity-100 transition-opacity shadow-xs"
+                      title="Futa Picha"
+                    >
+                      <XCircle className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Add Image Inputs */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <input
+                  type="url"
+                  value={imageUrlInput}
+                  onChange={(e) => setImageUrlInput(e.target.value)}
+                  placeholder="Bandika Linki ya Picha (Image URL) au tumia kitufe cha kupakia..."
+                  className="flex-1 p-2 text-xs bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleAddImage()}
+                  disabled={!imageUrlInput.trim()}
+                >
+                  Ongeza URL
+                </Button>
+              </div>
+
+              <div className="flex items-center justify-between pt-1">
+                <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 shadow-xs transition-colors">
+                  <Plus className="w-3.5 h-3.5 text-brand-600" />
+                  {uploadingImage ? 'Inapakia...' : 'Pakia Picha Kutoka Kwenye Kifaa'}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageFileUpload}
+                    disabled={uploadingImage}
+                    className="hidden"
+                  />
+                </label>
+
+                {newProductImages.length < 3 && (
+                  <span className="text-[11px] font-medium text-amber-600">
+                    Bado picha {3 - newProductImages.length}
+                  </span>
+                )}
+              </div>
+
+              {/* Preset Sample Images for quick testing */}
+              <div className="pt-2 border-t border-slate-200">
+                <span className="text-[10px] text-slate-400 font-bold uppercase block mb-1.5">
+                  Mifano ya Picha za Haraka (Bofya kuongeza):
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    { name: 'Kalamu (Pen)', url: 'https://images.unsplash.com/photo-1585336261026-7f093202976d?w=500&auto=format&fit=crop&q=60' },
+                    { name: 'Daftari (Notebook)', url: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=60' },
+                    { name: 'Faili (Box File)', url: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=500&auto=format&fit=crop&q=60' },
+                    { name: 'Kikokotoo (Calculator)', url: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?w=500&auto=format&fit=crop&q=60' },
+                    { name: 'Rula & Vifaa', url: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=500&auto=format&fit=crop&q=60' },
+                  ].map((preset, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => handleAddImage(preset.url)}
+                      className="px-2 py-1 bg-white hover:bg-brand-50 border border-slate-200 hover:border-brand-300 rounded-lg text-[10px] font-medium text-slate-700 transition-colors"
+                    >
+                      + {preset.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
             <Button type="button" variant="outline" size="md" onClick={() => setProductModalOpen(false)}>
               Ghairi
             </Button>
-            <Button type="submit" variant="primary" size="md">
-              Hifadhi Bidhaa
+            <Button
+              type="submit"
+              variant="primary"
+              size="md"
+              disabled={newProductImages.length < 3}
+            >
+              Hifadhi Bidhaa ({newProductImages.length}/3 Picha)
             </Button>
           </div>
         </form>

@@ -18,6 +18,7 @@ import {
 import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
 import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
+import { ProductCard } from '../../../components/products/ProductCard';
 import { api } from '../../../lib/api';
 import { useCartStore } from '../../../store/useCartStore';
 import { Stationery, Product } from '../../../types';
@@ -170,31 +171,7 @@ export default function StationeryDetailPage() {
       {activeTab === 'PRODUCTS' && (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {shop.products?.map((product) => (
-            <div
-              key={product.id}
-              className="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-xs flex flex-col justify-between"
-            >
-              <div>
-                <div className="w-full h-28 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-400 mb-2">
-                  <ShoppingBag className="w-8 h-8 text-brand-600/70" />
-                </div>
-                <h4 className="text-xs font-bold text-slate-900 line-clamp-2">{product.name}</h4>
-              </div>
-              <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs font-extrabold text-slate-900">
-                  TZS {product.price.toLocaleString()}
-                </span>
-                <button
-                  onClick={() => {
-                    addProductToCart(product, 1, shop);
-                    toast.success(`Imeongezwa: ${product.name}`);
-                  }}
-                  className="p-1.5 bg-brand-600 text-white rounded-xl hover:bg-brand-700 transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
+            <ProductCard key={product.id} product={product} shopOverride={shop} />
           ))}
         </div>
       )}

@@ -103,6 +103,7 @@ export interface Product {
   description?: string;
   price: number;
   imageUrl?: string;
+  images?: string[];
   stockQuantity: number;
   isAvailable: boolean;
   sku?: string;

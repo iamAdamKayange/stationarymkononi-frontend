@@ -7,12 +7,11 @@ import { Badge } from '../../components/ui/Badge';
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { api } from '../../lib/api';
-import { useCartStore } from '../../store/useCartStore';
+import { ProductCard } from '../../components/products/ProductCard';
 import { Product, ProductCategory } from '../../types';
 import toast from 'react-hot-toast';
 
 export default function ProductsPage() {
-  const addProductToCart = useCartStore((state) => state.addProduct);
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -118,52 +117,7 @@ export default function ProductsPage() {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => (
-            <div
-              key={product.id}
-              className="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
-            >
-              <div>
-                <div className="w-full h-32 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 mb-3 group-hover:scale-105 transition-transform">
-                  <ShoppingBag className="w-10 h-10 text-brand-600/70" />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] uppercase font-bold text-brand-600">
-                    {product.category?.name}
-                  </span>
-                  <span className="text-[10px] text-slate-400">
-                    {product.stationery?.name}
-                  </span>
-                </div>
-                <h3 className="text-sm font-bold text-slate-900 mt-1 line-clamp-2">
-                  {product.name}
-                </h3>
-                {product.description && (
-                  <p className="text-xs text-slate-500 mt-1 line-clamp-2">{product.description}</p>
-                )}
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] text-slate-400 block">Bei:</span>
-                  <span className="text-sm font-extrabold text-slate-900">
-                    TZS {product.price.toLocaleString()}
-                  </span>
-                </div>
-                <button
-                  onClick={() => {
-                    if (product.stationery) {
-                      addProductToCart(product, 1, product.stationery);
-                      toast.success(`Imeongezwa: ${product.name}`);
-                    } else {
-                      toast.error('Duka halipatikani');
-                    }
-                  }}
-                  className="px-3 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold flex items-center gap-1 shadow-xs transition-transform active:scale-95"
-                >
-                  <Plus className="w-3.5 h-3.5" /> Ongeza
-                </button>
-              </div>
-            </div>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       )}

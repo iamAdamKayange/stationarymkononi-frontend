@@ -22,6 +22,7 @@ import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
 import { OrderStatusStepper } from '../../../components/orders/OrderStatusStepper';
 import { LiveTrackingMap } from '../../../components/maps/LiveTrackingMap';
 import { RatingModal } from '../../../components/orders/RatingModal';
+import { PaymentDemoModal } from '../../../components/payment/PaymentDemoModal';
 import { api } from '../../../lib/api';
 import { getSocket } from '../../../lib/socket';
 import { Order } from '../../../types';
@@ -34,6 +35,7 @@ export default function OrderTrackingPage() {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [ratingModalOpen, setRatingModalOpen] = useState(false);
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
   const fetchOrder = async () => {
     try {
@@ -133,8 +135,41 @@ export default function OrderTrackingPage() {
             <span className="text-lg sm:text-xl font-extrabold text-brand-700">
               TZS {order.totalAmount.toLocaleString()}
             </span>
+            <div className="mt-1">
+              <Badge
+                variant={order.payment?.status === 'PAID' ? 'success' : 'warning'}
+                size="sm"
+              >
+                {order.payment?.status === 'PAID' ? 'IMELIPWA ✓' : 'HAIJALIPWA (PENDING)'}
+              </Badge>
+            </div>
           </div>
         </div>
+
+        {/* Unpaid Order Demo Payment Prompt */}
+        {order.payment?.status !== 'PAID' && (
+          <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0">
+                <CreditCard className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="font-bold text-xs text-amber-900">Malipo Bado Hayajakamilika</div>
+                <div className="text-[11px] text-amber-700">
+                  Thibitisha malipo kupitia M-Pesa / Tigo / Airtel ili stationery ianze kuchapa mara moja.
+                </div>
+              </div>
+            </div>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => setPaymentModalOpen(true)}
+              leftIcon={<CreditCard className="w-4 h-4" />}
+            >
+              Lipa Sasa (Demo Pay)
+            </Button>
+          </div>
+        )}
 
         {/* Real-time Order Status Stepper */}
         <OrderStatusStepper status={order.status} />
@@ -251,6 +286,24 @@ export default function OrderTrackingPage() {
         riderName={rider?.user?.fullName}
         onSuccess={fetchOrder}
       />
+
+      {/* Demo Payment Modal */}
+      {order.payment && (
+        <PaymentDemoModal
+          isOpen={paymentModalOpen}
+          onClose={() => setPaymentModalOpen(false)}
+          orderId={order.id}
+          orderNumber={order.orderNumber}
+          amount={order.totalAmount}
+          paymentMethod={order.payment.paymentMethod}
+          transactionReference={order.payment.transactionReference}
+          customerPhone={order.deliveryPhone || undefined}
+          onSuccess={() => {
+            setPaymentModalOpen(false);
+            fetchOrder();
+          }}
+        />
+      )}
     </div>
   );
 }
