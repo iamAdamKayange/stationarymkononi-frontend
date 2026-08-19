@@ -1,0 +1,256 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import {
+  Package,
+  Phone,
+  Building,
+  Bike,
+  MapPin,
+  Clock,
+  ArrowLeft,
+  Star,
+  CheckCircle,
+  FileText,
+  CreditCard,
+} from 'lucide-react';
+import { Button } from '../../../components/ui/Button';
+import { Badge } from '../../../components/ui/Badge';
+import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
+import { OrderStatusStepper } from '../../../components/orders/OrderStatusStepper';
+import { LiveTrackingMap } from '../../../components/maps/LiveTrackingMap';
+import { RatingModal } from '../../../components/orders/RatingModal';
+import { api } from '../../../lib/api';
+import { getSocket } from '../../../lib/socket';
+import { Order } from '../../../types';
+import toast from 'react-hot-toast';
+
+export default function OrderTrackingPage() {
+  const params = useParams();
+  const id = params?.id as string;
+
+  const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [ratingModalOpen, setRatingModalOpen] = useState(false);
+
+  const fetchOrder = async () => {
+    try {
+      const res = (await api.get(`/orders/${id}`)) as { data: Order };
+      if (res?.data) setOrder(res.data);
+    } catch (err) {
+      console.error(err);
+      toast.error('Imeshindikana kupakia taarifa za oda');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!id) return;
+    fetchOrder();
+
+    // Socket.IO real-time order status listener
+    const socket = getSocket();
+    socket.emit('join:order', id);
+
+    const handleStatusUpdate = (data: { status: Order['status'] }) => {
+      if (data?.status) {
+        setOrder((prev) => (prev ? { ...prev, status: data.status } : null));
+        toast.success(`Hali ya oda imebadilika: ${data.status} 🚀`);
+      }
+    };
+
+    socket.on('order:status_updated', handleStatusUpdate);
+
+    return () => {
+      socket.off('order:status_updated', handleStatusUpdate);
+      socket.emit('leave:order', id);
+    };
+  }, [id]);
+
+  if (loading) return <LoadingSpinner message="Inapakia taarifa za oda na ramani ya GPS..." />;
+  if (!order) {
+    return (
+      <div className="max-w-md mx-auto my-12 text-center">
+        <h3 className="font-bold text-slate-800">Oda haikupatikana</h3>
+        <Link href="/orders" className="text-xs text-brand-600 underline mt-2 block">
+          Rudi kwenye orodha ya oda
+        </Link>
+      </div>
+    );
+  }
+
+  const stationeryLat = order.stationery?.latitude || -6.7785;
+  const stationeryLng = order.stationery?.longitude || 39.2235;
+  const dropoffLat = order.deliveryLatitude || -6.7725;
+  const dropoffLng = order.deliveryLongitude || 39.2065;
+  const rider = order.delivery?.rider;
+
+  return (
+    <div className="max-w-4xl mx-auto space-y-6 animate-fadeIn">
+      {/* Top Navigation Back */}
+      <div className="flex items-center justify-between">
+        <Link
+          href="/orders"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900"
+        >
+          <ArrowLeft className="w-4 h-4" /> Rudi kwenye Oda Zangu
+        </Link>
+
+        {order.status === 'DELIVERED' && (
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => setRatingModalOpen(true)}
+            leftIcon={<Star className="w-4 h-4 fill-amber-300 text-amber-300" />}
+          >
+            Toa Alama (Review)
+          </Button>
+        )}
+      </div>
+
+      {/* Main Order Card */}
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-md space-y-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                Oda #{order.orderNumber}
+              </h1>
+              <Badge variant="brand" size="sm">
+                {order.status}
+              </Badge>
+            </div>
+            <p className="text-xs text-slate-500 mt-1">
+              Imewekwa: {new Date(order.createdAt).toLocaleString('sw-TZ')}
+            </p>
+          </div>
+
+          <div className="text-left sm:text-right">
+            <span className="text-xs text-slate-400 block">Jumla ya Malipo:</span>
+            <span className="text-lg sm:text-xl font-extrabold text-brand-700">
+              TZS {order.totalAmount.toLocaleString()}
+            </span>
+          </div>
+        </div>
+
+        {/* Real-time Order Status Stepper */}
+        <OrderStatusStepper status={order.status} />
+
+        {/* Live GPS Map Component */}
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-brand-600" />
+            Live Delivery GPS Tracking (Ramani ya Moja kwa Moja)
+          </h3>
+          <LiveTrackingMap
+            orderId={order.id}
+            deliveryId={order.delivery?.id}
+            stationeryLocation={{ lat: stationeryLat, lng: stationeryLng }}
+            stationeryName={order.stationery?.name}
+            customerLocation={{ lat: dropoffLat, lng: dropoffLng }}
+            customerAddress={order.deliveryAddress}
+            initialRiderLocation={
+              order.delivery?.currentLat && order.delivery?.currentLng
+                ? { lat: order.delivery.currentLat, lng: order.delivery.currentLng }
+                : undefined
+            }
+          />
+        </div>
+
+        {/* Rider & Stationery Information Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Stationery Shop Card */}
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+            <div className="text-[10px] font-bold uppercase text-amber-700">Stationery Shop</div>
+            <h4 className="font-bold text-slate-900 text-sm">{order.stationery?.name}</h4>
+            <p className="text-xs text-slate-500">{order.stationery?.address}</p>
+            {order.stationery?.phoneNumber && (
+              <a
+                href={`tel:${order.stationery.phoneNumber}`}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 hover:underline pt-1"
+              >
+                <Phone className="w-3.5 h-3.5" /> Piga Simu: {order.stationery.phoneNumber}
+              </a>
+            )}
+          </div>
+
+          {/* Rider Card */}
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+            <div className="text-[10px] font-bold uppercase text-blue-700">Delivery Rider</div>
+            {rider ? (
+              <>
+                <h4 className="font-bold text-slate-900 text-sm">{rider.user?.fullName}</h4>
+                <p className="text-xs text-slate-500">
+                  {rider.vehicleType} • Bamba: <strong>{rider.vehiclePlate || 'N/A'}</strong>
+                </p>
+                {rider.user?.phoneNumber && (
+                  <a
+                    href={`tel:${rider.user.phoneNumber}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:underline pt-1"
+                  >
+                    <Phone className="w-3.5 h-3.5" /> Piga Simu Rider: {rider.user.phoneNumber}
+                  </a>
+                )}
+              </>
+            ) : (
+              <p className="text-xs text-slate-500 italic py-2">
+                Mfumo unatafuta rider wa karibu kukabidhiwa mzigo wako...
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Itemized Receipt */}
+        <div className="space-y-3 pt-2">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            Vipengele vya Oda (Items Ordered)
+          </h3>
+          <div className="divide-y divide-slate-100 border border-slate-100 rounded-2xl overflow-hidden">
+            {order.orderItems?.map((item) => (
+              <div key={item.id} className="p-3.5 bg-slate-50/50 flex items-center justify-between text-xs">
+                <div>
+                  <div className="font-bold text-slate-800">{item.title}</div>
+                  <div className="text-slate-400 text-[11px]">Idadi: {item.quantity}</div>
+                </div>
+                <span className="font-bold text-slate-900">TZS {item.totalPrice.toLocaleString()}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Totals */}
+          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1.5 text-xs text-slate-600">
+            <div className="flex justify-between">
+              <span>Gharama ya Printing:</span>
+              <span>TZS {order.printingCost.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Vifaa vya Dukani:</span>
+              <span>TZS {order.productCost.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Gharama ya Usafiri (Delivery):</span>
+              <span>TZS {order.deliveryFee.toLocaleString()}</span>
+            </div>
+            <div className="pt-2 border-t border-slate-200 flex justify-between font-extrabold text-sm text-slate-900">
+              <span>JUMLA KUU:</span>
+              <span className="text-brand-700">TZS {order.totalAmount.toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Review Modal */}
+      <RatingModal
+        isOpen={ratingModalOpen}
+        onClose={() => setRatingModalOpen(false)}
+        orderId={order.id}
+        stationeryName={order.stationery?.name}
+        riderName={rider?.user?.fullName}
+        onSuccess={fetchOrder}
+      />
+    </div>
+  );
+}
