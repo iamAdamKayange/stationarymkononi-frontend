@@ -4,6 +4,7 @@ import './globals.css';
 import { Navbar } from '../components/layout/Navbar';
 import { BottomNav } from '../components/layout/BottomNav';
 import { Toaster } from 'react-hot-toast';
+import { SettingsInitializer } from '../components/layout/SettingsInitializer';
 
 export const metadata: Metadata = {
   title: 'Stationery Mkononi | Print. Order. Deliver.',
@@ -21,7 +22,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="sw">
-      <body className="min-h-screen flex flex-col bg-slate-50">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (localStorage.getItem('stationery-theme') === 'dark' || (!('stationery-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+                var lang = localStorage.getItem('stationery-lang') || 'sw';
+                document.documentElement.setAttribute('lang', lang);
+              } catch (_) {}
+            `,
+          }}
+        />
+      </head>
+      <body className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 dark:text-slate-50 transition-colors duration-200">
+        <SettingsInitializer />
         <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
         <Navbar />
         <main className="flex-1 pb-20 md:pb-8 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
