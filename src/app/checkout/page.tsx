@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   MapPin,
@@ -20,7 +20,7 @@ import { PaymentDemoModal } from '../../components/payment/PaymentDemoModal';
 import { useCartStore } from '../../store/useCartStore';
 import { useAuthStore } from '../../store/useAuthStore';
 import { api } from '../../lib/api';
-import { PaymentMethod } from '../../types';
+import { Address, PaymentMethod } from '../../types';
 import toast from 'react-hot-toast';
 
 export default function CheckoutPage() {
@@ -30,19 +30,16 @@ export default function CheckoutPage() {
     useCartStore();
 
   // Delivery Form State
-  const [deliveryAddress, setDeliveryAddress] = useState(
-    'UDSM Hostels, Block B, Chumba 204'
-  );
-  const [deliveryLat, setDeliveryLat] = useState(-6.7725);
-  const [deliveryLng, setDeliveryLng] = useState(39.2065);
-  const [deliveryPhone, setDeliveryPhone] = useState(user?.phoneNumber || '0755123456');
-  const [deliveryInstructions, setDeliveryInstructions] = useState(
-    'Deliver to CIVE gate and call me.'
-  );
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [deliveryLat, setDeliveryLat] = useState<number | null>(null);
+  const [deliveryLng, setDeliveryLng] = useState<number | null>(null);
+  const [deliveryPhone, setDeliveryPhone] = useState('');
+  const [deliveryInstructions, setDeliveryInstructions] = useState('');
+  const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
 
   // Payment Form State
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('M_PESA');
-  const [paymentPhone, setPaymentPhone] = useState(user?.phoneNumber || '0755123456');
+  const [paymentPhone, setPaymentPhone] = useState('');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
@@ -58,6 +55,43 @@ export default function CheckoutPage() {
   const deliveryFee = 2000;
   const totalAmount = subtotal + deliveryFee;
 
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const loadProfile = async () => {
+      try {
+        const res = (await api.get('/auth/me')) as {
+          data: {
+            phoneNumber?: string;
+            addresses?: Address[];
+          };
+        };
+
+        const addresses = res?.data?.addresses || [];
+        setSavedAddresses(addresses);
+
+        const defaultAddress = addresses.find((address) => address.isDefault) || addresses[0];
+        if (defaultAddress) {
+          setDeliveryAddress(defaultAddress.addressLine);
+          setDeliveryLat(defaultAddress.latitude);
+          setDeliveryLng(defaultAddress.longitude);
+          setDeliveryInstructions(defaultAddress.instructions || '');
+        }
+
+        const phone = res?.data?.phoneNumber || user?.phoneNumber || '';
+        setDeliveryPhone((prev) => prev || phone);
+        setPaymentPhone((prev) => prev || phone);
+      } catch {
+        if (user?.phoneNumber) {
+          setDeliveryPhone((prev) => prev || user.phoneNumber || '');
+          setPaymentPhone((prev) => prev || user.phoneNumber || '');
+        }
+      }
+    };
+
+    loadProfile();
+  }, [isAuthenticated, user?.phoneNumber]);
+
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -69,6 +103,11 @@ export default function CheckoutPage() {
 
     if (!stationery) {
       toast.error('Duka la stationery halikuchaguliwa');
+      return;
+    }
+
+    if (deliveryLat === null || deliveryLng === null) {
+      toast.error('Tafadhali weka eneo la delivery kwanza');
       return;
     }
 
@@ -178,8 +217,8 @@ export default function CheckoutPage() {
 
             {/* Interactive Map Picker */}
             <LocationPickerMap
-              initialLat={deliveryLat}
-              initialLng={deliveryLng}
+              initialLat={deliveryLat ?? undefined}
+              initialLng={deliveryLng ?? undefined}
               onLocationSelect={(lat, lng) => {
                 setDeliveryLat(lat);
                 setDeliveryLng(lng);
@@ -194,7 +233,11 @@ export default function CheckoutPage() {
                 type="text"
                 value={deliveryAddress}
                 onChange={(e) => setDeliveryAddress(e.target.value)}
-                placeholder="mfano: Chuo Kikuu UDSM Hostels Block B au Posta Mpya"
+                placeholder={
+                  savedAddresses.length > 0
+                    ? 'Chagua au hariri anuani iliyohifadhiwa'
+                    : 'Weka anuani ya delivery'
+                }
                 className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
                 required
               />
@@ -211,7 +254,7 @@ export default function CheckoutPage() {
                     type="tel"
                     value={deliveryPhone}
                     onChange={(e) => setDeliveryPhone(e.target.value)}
-                    placeholder="0755 123 456"
+                    placeholder="Namba ya simu ya kupokea mzigo"
                     className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
                     required
                   />
@@ -226,7 +269,7 @@ export default function CheckoutPage() {
                   type="text"
                   value={deliveryInstructions}
                   onChange={(e) => setDeliveryInstructions(e.target.value)}
-                  placeholder="mfano: Deliver to CIVE gate and call me"
+                  placeholder="Maelekezo yoyote ya ziada kwa rider"
                   className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 bg-white"
                 />
               </div>
@@ -304,7 +347,7 @@ export default function CheckoutPage() {
                   type="tel"
                   value={paymentPhone}
                   onChange={(e) => setPaymentPhone(e.target.value)}
-                  placeholder="0755 123 456"
+                  placeholder="Namba ya simu ya malipo"
                   className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
                   required
                 />

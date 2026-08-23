@@ -25,22 +25,58 @@ import { RatingModal } from '../../../components/orders/RatingModal';
 import { PaymentDemoModal } from '../../../components/payment/PaymentDemoModal';
 import { api } from '../../../lib/api';
 import { getSocket } from '../../../lib/socket';
-import { Order } from '../../../types';
+import { Order, TrackingPoint } from '../../../types';
 import toast from 'react-hot-toast';
+
+interface TrackingSnapshot {
+  id: string;
+  currentLat?: number | null;
+  currentLng?: number | null;
+  trackingHistory?: TrackingPoint[];
+  order?: {
+    id: string;
+    orderNumber: string;
+    status: Order['status'];
+    deliveryAddress: string;
+    stationery?: {
+      name: string;
+      address: string;
+      latitude: number;
+      longitude: number;
+      phoneNumber: string;
+    };
+  };
+  rider?: {
+    id: string;
+    user?: {
+      fullName: string;
+      phoneNumber?: string;
+      avatarUrl?: string;
+    };
+    vehicleType: string;
+    vehiclePlate?: string;
+  };
+}
 
 export default function OrderTrackingPage() {
   const params = useParams();
   const id = params?.id as string;
 
   const [order, setOrder] = useState<Order | null>(null);
+  const [tracking, setTracking] = useState<TrackingSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [ratingModalOpen, setRatingModalOpen] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
   const fetchOrder = async () => {
     try {
-      const res = (await api.get(`/orders/${id}`)) as { data: Order };
-      if (res?.data) setOrder(res.data);
+      const [orderRes, trackingRes] = await Promise.all([
+        api.get(`/orders/${id}`) as Promise<{ data: Order }>,
+        api.get(`/tracking/order/${id}`) as Promise<{ data: TrackingSnapshot }>,
+      ]);
+
+      if (orderRes?.data) setOrder(orderRes.data);
+      if (trackingRes?.data) setTracking(trackingRes.data);
     } catch (err) {
       console.error(err);
       toast.error('Imeshindikana kupakia taarifa za oda');
@@ -84,11 +120,26 @@ export default function OrderTrackingPage() {
     );
   }
 
-  const stationeryLat = order.stationery?.latitude || -6.7785;
-  const stationeryLng = order.stationery?.longitude || 39.2235;
-  const dropoffLat = order.deliveryLatitude || -6.7725;
-  const dropoffLng = order.deliveryLongitude || 39.2065;
-  const rider = order.delivery?.rider;
+  const stationeryLat =
+    tracking?.order?.stationery?.latitude ?? order.stationery?.latitude;
+  const stationeryLng =
+    tracking?.order?.stationery?.longitude ?? order.stationery?.longitude;
+  const dropoffLat = order.deliveryLatitude;
+  const dropoffLng = order.deliveryLongitude;
+  const rider = tracking?.rider || order.delivery?.rider;
+
+  if (
+    stationeryLat === undefined ||
+    stationeryLng === undefined ||
+    dropoffLat === undefined ||
+    dropoffLng === undefined
+  ) {
+    return (
+      <div className="max-w-md mx-auto my-12 text-center">
+        <LoadingSpinner message="Inapakia ramani ya delivery kutoka backend..." />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-fadeIn">
@@ -184,14 +235,17 @@ export default function OrderTrackingPage() {
             orderId={order.id}
             deliveryId={order.delivery?.id}
             stationeryLocation={{ lat: stationeryLat, lng: stationeryLng }}
-            stationeryName={order.stationery?.name}
+            stationeryName={tracking?.order?.stationery?.name || order.stationery?.name}
             customerLocation={{ lat: dropoffLat, lng: dropoffLng }}
             customerAddress={order.deliveryAddress}
             initialRiderLocation={
-              order.delivery?.currentLat && order.delivery?.currentLng
+              tracking?.currentLat != null && tracking?.currentLng != null
+                ? { lat: tracking.currentLat, lng: tracking.currentLng }
+                : order.delivery?.currentLat && order.delivery?.currentLng
                 ? { lat: order.delivery.currentLat, lng: order.delivery.currentLng }
                 : undefined
             }
+            trackingHistory={tracking?.trackingHistory || []}
           />
         </div>
 

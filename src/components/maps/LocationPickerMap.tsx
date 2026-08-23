@@ -11,17 +11,16 @@ interface LocationPickerMapProps {
 }
 
 export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
-  initialLat = -6.7725,
-  initialLng = 39.2065,
+  initialLat,
+  initialLng,
   onLocationSelect,
 }) => {
-  const [lat, setLat] = useState(initialLat);
-  const [lng, setLng] = useState(initialLng);
+  const [lat, setLat] = useState<number | null>(typeof initialLat === 'number' ? initialLat : null);
+  const [lng, setLng] = useState<number | null>(typeof initialLng === 'number' ? initialLng : null);
   const [isLocating, setIsLocating] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [resolvedAddress, setResolvedAddress] = useState<string>('');
-  const [mapLoaded, setMapLoaded] = useState(false);
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -29,7 +28,7 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
 
   // Initialize Leaflet Map
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || lat === null || lng === null || mapInstanceRef.current) return;
 
     // Dynamically import Leaflet so SSR does not fail
     import('leaflet').then((L) => {
@@ -87,13 +86,13 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
 
         mapInstanceRef.current = map;
         markerRef.current = marker;
-        setMapLoaded(true);
-
         // Reverse geocode initial coords
         reverseGeocode(lat, lng);
       }
     });
+  }, [lat, lng]);
 
+  useEffect(() => {
     return () => {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
@@ -101,6 +100,25 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (lat !== null && lng !== null) return;
+
+    if (typeof window !== 'undefined' && navigator.geolocation) {
+      setIsLocating(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLat(position.coords.latitude);
+          setLng(position.coords.longitude);
+          setIsLocating(false);
+        },
+        () => {
+          setIsLocating(false);
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+  }, [lat, lng]);
 
   // Reverse Geocoding with OSM Nominatim API
   const reverseGeocode = async (latitude: number, longitude: number) => {
@@ -143,7 +161,6 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
         (error) => {
           console.warn('Geolocation error:', error);
           setIsLocating(false);
-          onLocationSelect(lat, lng);
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
@@ -224,13 +241,22 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
 
       {/* Real Interactive Leaflet Container */}
       <div className="relative w-full h-[280px] sm:h-[320px] rounded-2xl overflow-hidden border-2 border-brand-500/40 shadow-md bg-slate-100">
+        {lat === null || lng === null ? (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
+            <div className="text-center space-y-2">
+              <Loader2 className="w-6 h-6 animate-spin mx-auto text-brand-600" />
+              <p className="text-xs font-semibold text-slate-600">Tafuta au ruhusu GPS ili kuonyesha ramani</p>
+            </div>
+          </div>
+        ) : (
         <div ref={mapContainerRef} className="w-full h-full" />
+        )}
 
         {/* Live GPS Coordinates Overlay */}
         <div className="absolute top-3 left-3 z-[1000] bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl text-[11px] font-mono text-slate-800 shadow-md border border-slate-200/80 flex items-center gap-1.5">
           <MapPin className="w-3.5 h-3.5 text-brand-600" />
           <span>
-            {lat.toFixed(5)}, {lng.toFixed(5)}
+            {lat !== null && lng !== null ? `${lat.toFixed(5)}, ${lng.toFixed(5)}` : 'Loading GPS...'}
           </span>
         </div>
 

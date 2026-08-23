@@ -22,6 +22,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { useCartStore } from '../../store/useCartStore';
 import { api } from '../../lib/api';
 import { useTranslation } from '../../lib/translations';
+import { getDashboardRouteForRole } from '../../lib/routing';
 
 export const Navbar: React.FC = () => {
   const router = useRouter();
@@ -51,17 +52,7 @@ export const Navbar: React.FC = () => {
   }, [isAuthenticated]);
 
   const getDashboardRoute = () => {
-    if (!user) return '/dashboard/customer';
-    switch (user.role) {
-      case 'STATIONERY':
-        return '/dashboard/stationery';
-      case 'DELIVERY_RIDER':
-        return '/dashboard/rider';
-      case 'ADMIN':
-        return '/dashboard/admin';
-      default:
-        return '/dashboard/customer';
-    }
+    return getDashboardRouteForRole(user?.role);
   };
 
   const navLinks = [

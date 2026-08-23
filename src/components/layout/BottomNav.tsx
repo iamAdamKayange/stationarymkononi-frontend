@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Home, Printer, ShoppingBag, Package, User } from 'lucide-react';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useTranslation } from '../../lib/translations';
+import { getDashboardRouteForRole } from '../../lib/routing';
 
 export const BottomNav: React.FC = () => {
   const pathname = usePathname();
@@ -14,16 +15,7 @@ export const BottomNav: React.FC = () => {
 
   const getProfileRoute = () => {
     if (!isAuthenticated || !user) return '/auth/login';
-    switch (user.role) {
-      case 'STATIONERY':
-        return '/dashboard/stationery';
-      case 'DELIVERY_RIDER':
-        return '/dashboard/rider';
-      case 'ADMIN':
-        return '/dashboard/admin';
-      default:
-        return '/dashboard/customer';
-    }
+    return getDashboardRouteForRole(user.role);
   };
 
   const navItems = [

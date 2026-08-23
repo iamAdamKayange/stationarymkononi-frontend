@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { getSocket } from '../../lib/socket';
-import { Compass, Navigation, MapPin, Bike, Building, Home, Zap } from 'lucide-react';
+import { Navigation, MapPin, Bike, Building, Home, Zap } from 'lucide-react';
+import { TrackingPoint } from '../../types';
 
 interface Coordinates {
   lat: number;
@@ -17,6 +18,7 @@ interface LiveTrackingMapProps {
   customerLocation: Coordinates;
   customerAddress?: string;
   initialRiderLocation?: Coordinates;
+  trackingHistory?: TrackingPoint[];
 }
 
 export const LiveTrackingMap: React.FC<LiveTrackingMapProps> = ({
@@ -27,12 +29,26 @@ export const LiveTrackingMap: React.FC<LiveTrackingMapProps> = ({
   customerLocation,
   customerAddress = 'Delivery Destination',
   initialRiderLocation,
+  trackingHistory = [],
 }) => {
-  const [riderLocation, setRiderLocation] = useState<Coordinates>(
-    initialRiderLocation || stationeryLocation
+  const sortedHistory = useMemo(
+    () =>
+      [...trackingHistory].sort(
+        (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+      ),
+    [trackingHistory]
   );
+  const initialRoutePoint =
+    sortedHistory.length > 0
+      ? { lat: sortedHistory[sortedHistory.length - 1].latitude, lng: sortedHistory[sortedHistory.length - 1].longitude }
+      : initialRiderLocation || stationeryLocation;
+
+  const [riderLocation, setRiderLocation] = useState<Coordinates>(initialRoutePoint);
   const [isLive, setIsLive] = useState(false);
   const [speed, setSpeed] = useState<number | null>(null);
+  const [routeHistory, setRouteHistory] = useState<Coordinates[]>(
+    sortedHistory.map((point) => ({ lat: point.latitude, lng: point.longitude }))
+  );
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -95,16 +111,20 @@ export const LiveTrackingMap: React.FC<LiveTrackingMapProps> = ({
           .bindPopup(`<b>${customerAddress}</b><br>Delivery Destination`);
 
         // Add Moving Rider Marker
-        const currentRiderPos = initialRiderLocation || stationeryLocation;
+        const currentRiderPos = initialRoutePoint;
         const riderMarker = L.marker([currentRiderPos.lat, currentRiderPos.lng], { icon: riderIcon })
           .addTo(map)
           .bindPopup(`<b>Delivery Rider</b><br>Live GPS Movement`);
 
         // Draw connecting polyline route
+        const historyPoints =
+          sortedHistory.length > 0
+            ? sortedHistory.map((point) => [point.latitude, point.longitude] as [number, number])
+            : [[currentRiderPos.lat, currentRiderPos.lng] as [number, number]];
         const polyline = L.polyline(
           [
             [stationeryLocation.lat, stationeryLocation.lng],
-            [currentRiderPos.lat, currentRiderPos.lng],
+            ...historyPoints,
             [customerLocation.lat, customerLocation.lng],
           ],
           { color: '#2563eb', weight: 4, opacity: 0.8, dashArray: '8, 8' }
@@ -130,7 +150,33 @@ export const LiveTrackingMap: React.FC<LiveTrackingMapProps> = ({
         mapInstanceRef.current = null;
       }
     };
-  }, []);
+  }, [customerLocation.lat, customerLocation.lng, initialRoutePoint.lat, initialRoutePoint.lng, sortedHistory, stationeryLocation.lat, stationeryLocation.lng]);
+
+  useEffect(() => {
+    setRouteHistory(sortedHistory.map((point) => ({ lat: point.latitude, lng: point.longitude })));
+    if (sortedHistory.length > 0) {
+      const latest = sortedHistory[sortedHistory.length - 1];
+      setRiderLocation({ lat: latest.latitude, lng: latest.longitude });
+    } else if (initialRiderLocation) {
+      setRiderLocation(initialRiderLocation);
+    } else {
+      setRiderLocation(stationeryLocation);
+    }
+  }, [initialRiderLocation, sortedHistory, stationeryLocation]);
+
+  useEffect(() => {
+    if (!riderMarkerRef.current || !routePolylineRef.current) return;
+
+    const currentRiderPos =
+      routeHistory.length > 0 ? routeHistory[routeHistory.length - 1] : riderLocation;
+
+    riderMarkerRef.current.setLatLng([currentRiderPos.lat, currentRiderPos.lng]);
+    routePolylineRef.current.setLatLngs([
+      [stationeryLocation.lat, stationeryLocation.lng],
+      ...routeHistory.map((point) => [point.lat, point.lng]),
+      [customerLocation.lat, customerLocation.lng],
+    ]);
+  }, [customerLocation.lat, customerLocation.lng, routeHistory, riderLocation, stationeryLocation.lat, stationeryLocation.lng]);
 
   // Socket.IO listener for live GPS updates from active delivery rider
   useEffect(() => {
@@ -149,6 +195,7 @@ export const LiveTrackingMap: React.FC<LiveTrackingMapProps> = ({
         setRiderLocation(newCoords);
         setIsLive(true);
         if (data.speed !== undefined) setSpeed(data.speed);
+        setRouteHistory((prev) => [...prev, newCoords]);
 
         // Update Rider Marker on Leaflet Map
         if (riderMarkerRef.current) {
@@ -159,6 +206,7 @@ export const LiveTrackingMap: React.FC<LiveTrackingMapProps> = ({
         if (routePolylineRef.current) {
           routePolylineRef.current.setLatLngs([
             [stationeryLocation.lat, stationeryLocation.lng],
+            ...routeHistory.map((point) => [point.lat, point.lng]),
             [data.latitude, data.longitude],
             [customerLocation.lat, customerLocation.lng],
           ]);
@@ -172,7 +220,7 @@ export const LiveTrackingMap: React.FC<LiveTrackingMapProps> = ({
       socket.off('tracking:location_update', handleLocationUpdate);
       if (orderId) socket.emit('leave:order', orderId);
     };
-  }, [orderId, deliveryId, stationeryLocation, customerLocation]);
+  }, [customerLocation, deliveryId, orderId, routeHistory, stationeryLocation]);
 
   return (
     <div className="relative w-full h-[340px] sm:h-[420px] rounded-3xl overflow-hidden border-2 border-brand-500/40 shadow-lg bg-slate-100">

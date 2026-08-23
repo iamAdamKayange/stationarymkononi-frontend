@@ -80,21 +80,6 @@ export default function RiderDashboardPage() {
         navigator.geolocation.getCurrentPosition(
           (pos) => {
             const { latitude, longitude, speed, heading } = pos.coords;
-            const socket = getSocket();
-
-            // Emit live GPS ping
-            socket.emit('rider:location_ping', {
-              deliveryId: activeDelivery.id,
-              orderId: activeDelivery.orderId,
-              riderId: rider?.id,
-              latitude,
-              longitude,
-              speed: speed ? speed * 3.6 : undefined, // to km/h
-              heading: heading || undefined,
-              timestamp: new Date().toISOString(),
-            });
-
-            // REST background fallback
             api
               .post('/tracking/location', {
                 deliveryId: activeDelivery.id,
@@ -186,7 +171,7 @@ export default function RiderDashboardPage() {
               </Badge>
             </div>
             <p className="text-xs text-slate-300 mt-1">
-              🛵 {rider?.vehicleType} • Bamba: <strong>{rider?.vehiclePlate || 'MC 123 TZ'}</strong> • ⭐{' '}
+              🛵 {rider?.vehicleType} • Bamba: <strong>{rider?.vehiclePlate || 'Haijasanidiwa'}</strong> • ⭐{' '}
               {rider?.avgRating.toFixed(1)}
             </p>
           </div>

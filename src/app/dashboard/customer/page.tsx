@@ -12,16 +12,26 @@ import {
   ArrowRight,
   ShieldCheck,
   CreditCard,
+  Bell,
+  Volume2,
+  Vibrate,
 } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
 import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
 import { useAuthStore } from '../../../store/useAuthStore';
+import { useSettingsStore } from '../../../store/useSettingsStore';
 import { api } from '../../../lib/api';
 import { Order } from '../../../types';
 
 export default function CustomerDashboardPage() {
   const { user, isAuthenticated } = useAuthStore();
+  const notificationsEnabled = useSettingsStore((state) => state.notificationsEnabled);
+  const notificationSoundEnabled = useSettingsStore((state) => state.notificationSoundEnabled);
+  const notificationVibrateEnabled = useSettingsStore((state) => state.notificationVibrateEnabled);
+  const setNotificationsEnabled = useSettingsStore((state) => state.setNotificationsEnabled);
+  const setNotificationSoundEnabled = useSettingsStore((state) => state.setNotificationSoundEnabled);
+  const setNotificationVibrateEnabled = useSettingsStore((state) => state.setNotificationVibrateEnabled);
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -103,6 +113,95 @@ export default function CustomerDashboardPage() {
           <div className="text-2xl font-extrabold text-slate-900 mt-1">
             TZS {totalSpent.toLocaleString()}
           </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+              <Bell className="w-4 h-4 text-brand-600" /> Notification Preferences
+            </h3>
+            <p className="text-xs text-slate-500 mt-1">
+              Chagua kama alerts ziwe na sauti, vibration, au zimwe kabisa.
+            </p>
+          </div>
+          <Badge variant={notificationsEnabled ? 'success' : 'neutral'} size="sm">
+            {notificationsEnabled ? 'On' : 'Off'}
+          </Badge>
+        </div>
+
+        <div className="space-y-3">
+          <button
+            type="button"
+            onClick={() => setNotificationsEnabled(!notificationsEnabled)}
+            className="w-full flex items-center justify-between gap-4 rounded-2xl border border-slate-200 px-4 py-3 text-left hover:border-brand-300 hover:bg-brand-50/40 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <span className="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
+                <Bell className="w-5 h-5" />
+              </span>
+              <div>
+                <div className="font-semibold text-sm text-slate-900">Notifications</div>
+                <div className="text-xs text-slate-500">Pokea alerts za order, payment na delivery.</div>
+              </div>
+            </div>
+            <span
+              className={`text-xs font-bold px-3 py-1 rounded-full ${
+                notificationsEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'
+              }`}
+            >
+              {notificationsEnabled ? 'Enabled' : 'Disabled'}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setNotificationSoundEnabled(!notificationSoundEnabled)}
+            disabled={!notificationsEnabled}
+            className="w-full flex items-center justify-between gap-4 rounded-2xl border border-slate-200 px-4 py-3 text-left hover:border-brand-300 hover:bg-brand-50/40 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <div className="flex items-center gap-3">
+              <span className="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
+                <Volume2 className="w-5 h-5" />
+              </span>
+              <div>
+                <div className="font-semibold text-sm text-slate-900">Sound</div>
+                <div className="text-xs text-slate-500">Chime nyepesi pale app iko wazi.</div>
+              </div>
+            </div>
+            <span
+              className={`text-xs font-bold px-3 py-1 rounded-full ${
+                notificationSoundEnabled ? 'bg-sky-100 text-sky-700' : 'bg-slate-100 text-slate-500'
+              }`}
+            >
+              {notificationSoundEnabled ? 'On' : 'Off'}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setNotificationVibrateEnabled(!notificationVibrateEnabled)}
+            disabled={!notificationsEnabled}
+            className="w-full flex items-center justify-between gap-4 rounded-2xl border border-slate-200 px-4 py-3 text-left hover:border-brand-300 hover:bg-brand-50/40 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <div className="flex items-center gap-3">
+              <span className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                <Vibrate className="w-5 h-5" />
+              </span>
+              <div>
+                <div className="font-semibold text-sm text-slate-900">Vibrate</div>
+                <div className="text-xs text-slate-500">Mtetemo mfupi kwa alerts muhimu.</div>
+              </div>
+            </div>
+            <span
+              className={`text-xs font-bold px-3 py-1 rounded-full ${
+                notificationVibrateEnabled ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500'
+              }`}
+            >
+              {notificationVibrateEnabled ? 'On' : 'Off'}
+            </span>
+          </button>
         </div>
       </div>
 

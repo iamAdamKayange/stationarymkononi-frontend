@@ -1,5 +1,5 @@
 const CACHE_NAME = 'stationery-mkononi-v1';
-const STATIC_ASSETS = ['/', '/manifest.json'];
+const STATIC_ASSETS = ['/', '/manifest.json', '/icons/icon-192.svg', '/icons/icon-512.svg'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -37,12 +37,27 @@ self.addEventListener('fetch', (event) => {
 
 // Push Notification Handler
 self.addEventListener('push', (event) => {
-  const data = event.data ? event.data.json() : { title: 'Stationery Mkononi', body: 'Sasisho jipya la oda yako!' };
+  let data = { title: 'Stationery Mkononi', body: 'Sasisho jipya la oda yako!', url: '/notifications', data: {} };
+
+  if (event.data) {
+    try {
+      data = event.data.json();
+    } catch {
+      data.body = event.data.text();
+    }
+  }
+
   const options = {
     body: data.body,
-    icon: '/icons/icon-192.png',
-    badge: '/icons/icon-192.png',
-    data: data.data || {},
+    icon: '/icons/icon-192.svg',
+    badge: '/icons/icon-192.svg',
+    tag: data.type || 'stationery-notification',
+    requireInteraction: true,
+    vibrate: [200, 100, 200],
+    data: {
+      ...(data.data || {}),
+      url: data.url || data.data?.url || '/notifications',
+    },
   };
   event.waitUntil(self.registration.showNotification(data.title, options));
 });

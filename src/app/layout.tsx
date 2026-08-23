@@ -5,6 +5,9 @@ import { Navbar } from '../components/layout/Navbar';
 import { BottomNav } from '../components/layout/BottomNav';
 import { Toaster } from 'react-hot-toast';
 import { SettingsInitializer } from '../components/layout/SettingsInitializer';
+import { PwaInstallPrompt } from '../components/pwa/PwaInstallPrompt';
+import { NotificationEffects } from '../components/pwa/NotificationEffects';
+import { PushNotificationPrompt } from '../components/pwa/PushNotificationPrompt';
 
 export const metadata: Metadata = {
   title: 'Stationery Mkononi | Print. Order. Deliver.',
@@ -46,6 +49,9 @@ export default function RootLayout({
         <main className="flex-1 pb-20 md:pb-8 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {children}
         </main>
+        <PwaInstallPrompt />
+        <NotificationEffects />
+        <PushNotificationPrompt />
         <BottomNav />
       </body>
     </html>

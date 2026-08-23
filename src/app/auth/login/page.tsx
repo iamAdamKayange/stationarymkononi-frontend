@@ -1,21 +1,40 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Printer, Lock, User, ArrowRight } from 'lucide-react';
+import { Printer, Lock, User, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { api } from '../../../lib/api';
 import { useAuthStore } from '../../../store/useAuthStore';
+import { getDashboardRouteForRole } from '../../../lib/routing';
 import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const router = useRouter();
   const setAuth = useAuthStore((state) => state.setAuth);
+  const { isAuthenticated, user, initialize } = useAuthStore();
 
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [nextPath, setNextPath] = useState('');
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    setNextPath(params.get('next') || '');
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      router.replace(getDashboardRouteForRole(user.role));
+    }
+  }, [isAuthenticated, router, user]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,24 +65,13 @@ export default function LoginPage() {
 
       const { user, accessToken, refreshToken } = response.data;
       setAuth(user, accessToken, refreshToken);
-      toast.success(`Karibu tena, ${user.fullName}! 👋`);
+      toast.success(`Karibu tena, ${user.fullName}! 👋 App inaweza ku-install kama PWA.`);
 
-      // Dynamic Role Redirect
-      switch (user.role) {
-        case 'STATIONERY':
-          router.push('/dashboard/stationery');
-          break;
-        case 'DELIVERY_RIDER':
-          router.push('/dashboard/rider');
-          break;
-        case 'ADMIN':
-          router.push('/dashboard/admin');
-          break;
-        case 'CUSTOMER':
-        default:
-          router.push('/dashboard/customer');
-          break;
-      }
+      const safeNext =
+        nextPath && nextPath.startsWith('/') && !nextPath.startsWith('/auth')
+          ? nextPath
+          : getDashboardRouteForRole(user.role);
+      router.replace(safeNext);
     } catch (err) {
       toast.error((err as Error).message || 'Kuingia kumeshindikana. Angalia taarifa zako.');
     } finally {
@@ -84,53 +92,15 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Quick Demo Credentials Banner */}
-        <div className="mb-6 p-3 bg-brand-50/60 rounded-xl border border-brand-200 text-xs text-brand-900 space-y-1">
-          <div className="font-bold flex items-center justify-between">
-            <span>Akaunti za Majaribio (Demo):</span>
-            <span className="text-[10px] text-brand-600">Nenosiri: password123</span>
+        <div className="mb-6 p-4 rounded-2xl border border-emerald-200 bg-emerald-50/80 text-emerald-900 flex items-start gap-3">
+          <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0">
+            <ShieldCheck className="w-5 h-5" />
           </div>
-          <div className="grid grid-cols-2 gap-1 text-[11px] text-slate-700 pt-1">
-            <button
-              type="button"
-              onClick={() => {
-                setIdentifier('juma@gmail.com');
-                setPassword('password123');
-              }}
-              className="text-left p-1 bg-white rounded border border-brand-200 hover:bg-brand-100 font-medium"
-            >
-              👤 Wateja (Customer)
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setIdentifier('apex@stationery.co.tz');
-                setPassword('password123');
-              }}
-              className="text-left p-1 bg-white rounded border border-brand-200 hover:bg-brand-100 font-medium"
-            >
-              🏬 Stationery Shop
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setIdentifier('rashidi@rider.co.tz');
-                setPassword('password123');
-              }}
-              className="text-left p-1 bg-white rounded border border-brand-200 hover:bg-brand-100 font-medium"
-            >
-              🛵 Delivery Rider
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setIdentifier('admin@stationerymkononi.co.tz');
-                setPassword('password123');
-              }}
-              className="text-left p-1 bg-white rounded border border-brand-200 hover:bg-brand-100 font-medium"
-            >
-              👑 Admin Hub
-            </button>
+          <div className="text-xs space-y-1">
+            <div className="font-bold">Secure backend login</div>
+            <p className="text-emerald-800/90">
+              Your account is verified by the API. No demo credentials or sample logins are shown here.
+            </p>
           </div>
         </div>
 
@@ -182,7 +152,8 @@ export default function LoginPage() {
         </form>
 
         <div className="text-center mt-6 pt-6 border-t border-slate-100">
-          <p className="text-xs text-slate-600">
+          <p className="text-xs text-slate-600 flex items-center justify-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-brand-600" />
             Huna akaunti bado?{' '}
             <Link href="/auth/register" className="font-bold text-brand-600 hover:text-brand-700">
               Jisajili hapa

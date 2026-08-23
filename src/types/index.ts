@@ -44,8 +44,21 @@ export interface User {
   role: Role;
   status: UserStatus;
   avatarUrl?: string;
+  addresses?: Address[];
   stationery?: Stationery;
   riderProfile?: RiderProfile;
+}
+
+export interface Address {
+  id: string;
+  userId: string;
+  title: string;
+  addressLine: string;
+  city: string;
+  latitude: number;
+  longitude: number;
+  isDefault: boolean;
+  instructions?: string;
 }
 
 export interface Stationery {
@@ -199,6 +212,15 @@ export interface Delivery {
   lastTrackingUpdate?: string;
 }
 
+export interface TrackingPoint {
+  id?: string;
+  latitude: number;
+  longitude: number;
+  speed?: number | null;
+  heading?: number | null;
+  timestamp: string;
+}
+
 export interface Order {
   id: string;
   orderNumber: string;
@@ -235,6 +257,7 @@ export interface NotificationItem {
   body: string;
   type: string;
   relatedOrderId?: string;
+  data?: Record<string, unknown>;
   isRead: boolean;
   createdAt: string;
 }
