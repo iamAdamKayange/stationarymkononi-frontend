@@ -15,6 +15,8 @@ import {
   CheckCircle,
   FileText,
   CreditCard,
+  Eye,
+  Download,
 } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
@@ -25,7 +27,7 @@ import { RatingModal } from '../../../components/orders/RatingModal';
 import { PaymentDemoModal } from '../../../components/payment/PaymentDemoModal';
 import { api } from '../../../lib/api';
 import { getSocket } from '../../../lib/socket';
-import { Order, TrackingPoint } from '../../../types';
+import { Order, TrackingPoint, DocumentFile } from '../../../types';
 import toast from 'react-hot-toast';
 
 interface TrackingSnapshot {
@@ -58,6 +60,13 @@ interface TrackingSnapshot {
   };
 }
 
+const formatFileSize = (size: number) => {
+  if (size < 1024 * 1024) {
+    return `${Math.max(1, Math.round(size / 1024))} KB`;
+  }
+  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+};
+
 export default function OrderTrackingPage() {
   const params = useParams();
   const id = params?.id as string;
@@ -67,6 +76,10 @@ export default function OrderTrackingPage() {
   const [loading, setLoading] = useState(true);
   const [ratingModalOpen, setRatingModalOpen] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+
+  const openDocument = (doc: DocumentFile) => {
+    window.open(doc.viewUrl || doc.fileUrl, '_blank', 'noopener,noreferrer');
+  };
 
   const fetchOrder = async () => {
     try {
@@ -308,6 +321,66 @@ export default function OrderTrackingPage() {
               </div>
             ))}
           </div>
+
+          {order.documents && order.documents.length > 0 && (
+            <div className="space-y-3 pt-1">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Nyaraka Zilizopakiwa (Upload Files)
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {order.documents.map((doc) => (
+                  <div
+                    key={doc.id}
+                    className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center flex-shrink-0">
+                        <FileText className="w-5 h-5" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="font-bold text-slate-900 text-sm break-words">
+                            {doc.fileName}
+                          </h4>
+                          <Badge variant="neutral" size="sm" className="whitespace-nowrap">
+                            {doc.fileType.includes('pdf') ? 'PDF' : 'FILE'}
+                          </Badge>
+                        </div>
+                        <p className="text-[11px] text-slate-500 mt-1">
+                          {formatFileSize(doc.fileSize)} • Kurasa {doc.pageCount}
+                        </p>
+                        <p className="text-[11px] text-slate-400 mt-0.5">
+                          Imepakiwa na {doc.uploadedBy?.fullName || 'mtumiaji'} •{' '}
+                          {new Date(doc.createdAt).toLocaleString('sw-TZ')}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 min-w-[120px]"
+                        onClick={() => openDocument(doc)}
+                        leftIcon={<Eye className="w-4 h-4" />}
+                      >
+                        Fungua
+                      </Button>
+                      <a
+                        href={doc.downloadUrl || doc.fileUrl}
+                        download
+                        className="inline-flex flex-1 min-w-[120px] items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <Download className="w-4 h-4 mr-1.5" />
+                        Pakua
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Totals */}
           <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1.5 text-xs text-slate-600">

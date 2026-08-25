@@ -42,11 +42,11 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 dark:text-slate-50 transition-colors duration-200">
+      <body className="min-h-screen flex flex-col overflow-x-hidden bg-slate-50 dark:bg-slate-950 dark:text-slate-50 transition-colors duration-200">
         <SettingsInitializer />
         <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
         <Navbar />
-        <main className="flex-1 pb-20 md:pb-8 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <main className="flex-1 pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-8 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {children}
         </main>
         <PwaInstallPrompt />

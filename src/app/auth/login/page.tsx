@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Printer, Lock, User, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { Printer, Lock, User, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { api } from '../../../lib/api';
 import { useAuthStore } from '../../../store/useAuthStore';
@@ -90,18 +90,6 @@ export default function LoginPage() {
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
             Ingia kwenye akaunti yako kuendelea
           </p>
-        </div>
-
-        <div className="mb-6 p-4 rounded-2xl border border-emerald-200 bg-emerald-50/80 text-emerald-900 flex items-start gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0">
-            <ShieldCheck className="w-5 h-5" />
-          </div>
-          <div className="text-xs space-y-1">
-            <div className="font-bold">Secure backend login</div>
-            <p className="text-emerald-800/90">
-              Your account is verified by the API. No demo credentials or sample logins are shown here.
-            </p>
-          </div>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">

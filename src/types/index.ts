@@ -133,6 +133,19 @@ export interface DocumentUploadResponse {
   createdAt: string;
 }
 
+export interface DocumentFile extends DocumentUploadResponse {
+  orderId?: string | null;
+  downloadUrl?: string;
+  viewUrl?: string;
+  storageKey?: string | null;
+  uploadedBy?: {
+    id: string;
+    fullName: string;
+    username: string;
+    phoneNumber?: string | null;
+  };
+}
+
 export interface PrintItemConfiguration {
   documentId: string;
   fileName: string;
@@ -241,6 +254,7 @@ export interface Order {
   deliveryInstructions?: string;
   createdAt: string;
   orderItems: OrderItem[];
+  documents?: DocumentFile[];
   delivery?: Delivery;
   payment?: {
     id: string;
