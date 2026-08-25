@@ -81,6 +81,26 @@ export default function OrderTrackingPage() {
     window.open(doc.viewUrl || doc.fileUrl, '_blank', 'noopener,noreferrer');
   };
 
+  const downloadDocument = async (doc: DocumentFile) => {
+    try {
+      const response = (await api.get(`/documents/${doc.id}/download`, {
+        responseType: 'blob',
+      })) as Blob;
+
+      const blob = response as Blob;
+      const objectUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = doc.fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(objectUrl);
+    } catch (err) {
+      toast.error((err as Error).message || 'Imeshindikana kupakua document');
+    }
+  };
+
   const fetchOrder = async () => {
     try {
       const [orderRes, trackingRes] = await Promise.all([
@@ -367,14 +387,14 @@ export default function OrderTrackingPage() {
                       >
                         Fungua
                       </Button>
-                      <a
-                        href={doc.downloadUrl || doc.fileUrl}
-                        download
+                      <button
+                        type="button"
+                        onClick={() => downloadDocument(doc)}
                         className="inline-flex flex-1 min-w-[120px] items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
                       >
                         <Download className="w-4 h-4 mr-1.5" />
                         Pakua
-                      </a>
+                      </button>
                     </div>
                   </div>
                 ))}

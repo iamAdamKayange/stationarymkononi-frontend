@@ -144,6 +144,25 @@ export default function StationeryDashboardPage() {
     setNewProductImages((prev) => prev.filter((_, idx) => idx !== indexToRemove));
   };
 
+  const downloadDocument = async (docId: string, fileName: string) => {
+    try {
+      const response = (await api.get(`/documents/${docId}/download`, {
+        responseType: 'blob',
+      })) as Blob;
+      const blob = response as Blob;
+      const objectUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(objectUrl);
+    } catch (err) {
+      toast.error((err as Error).message || 'Imeshindikana kupakua document');
+    }
+  };
+
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -325,13 +344,14 @@ export default function StationeryDashboardPage() {
                   >
                     Fungua
                   </Button>
-                  <a
-                    href={doc.downloadUrl || doc.fileUrl}
-                    download
+                  <button
+                    type="button"
+                    onClick={() => downloadDocument(doc.id, doc.fileName)}
                     className="inline-flex flex-1 min-w-[120px] items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
                   >
+                    <Download className="w-4 h-4 mr-1.5" />
                     Pakua
-                  </a>
+                  </button>
                 </div>
               </div>
             ))}
