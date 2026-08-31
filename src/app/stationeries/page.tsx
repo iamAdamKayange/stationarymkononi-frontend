@@ -53,7 +53,7 @@ export default function StationeriesListPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Tafuta kwa jina la stationery, eneo au mtaa... (mfano: Mwenge, Posta, Kariakoo)"
-          className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm focus:ring-2 focus:ring-brand-500 shadow-xs text-slate-900 dark:text-slate-100"
+          className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm focus:ring-2 focus:ring-brand-500 shadow-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
         />
       </div>
 

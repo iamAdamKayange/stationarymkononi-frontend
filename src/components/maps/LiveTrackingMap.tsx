@@ -223,12 +223,12 @@ export const LiveTrackingMap: React.FC<LiveTrackingMapProps> = ({
   }, [customerLocation, deliveryId, orderId, routeHistory, stationeryLocation]);
 
   return (
-    <div className="relative w-full h-[340px] sm:h-[420px] rounded-3xl overflow-hidden border-2 border-brand-500/40 shadow-lg bg-slate-100">
+    <div className="relative w-full h-[340px] sm:h-[420px] rounded-3xl overflow-hidden border-2 border-brand-500/40 shadow-lg bg-slate-100 dark:bg-slate-800">
       {/* Leaflet Map Div */}
       <div ref={mapContainerRef} className="w-full h-full" />
 
       {/* Live Status Overlay */}
-      <div className="absolute top-3 left-3 z-[1000] flex items-center gap-2 px-3.5 py-1.5 bg-white/95 backdrop-blur-md rounded-full shadow-lg border border-slate-200/80 text-xs font-semibold">
+      <div className="absolute top-3 left-3 z-[1000] flex items-center gap-2 px-3.5 py-1.5 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-full shadow-lg border border-slate-200/80 dark:border-slate-700 text-xs font-semibold">
         <span className="relative flex h-2.5 w-2.5">
           <span
             className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
@@ -241,11 +241,11 @@ export const LiveTrackingMap: React.FC<LiveTrackingMapProps> = ({
             }`}
           ></span>
         </span>
-        <span className="text-slate-900 font-bold">
+        <span className="text-slate-900 dark:text-slate-100 font-bold">
           {isLive ? 'Live GPS Active' : 'GPS Tracking Ready'}
         </span>
         {speed !== null && (
-          <span className="text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full text-[10px] font-bold">
+          <span className="text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full text-[10px] font-bold">
             {Math.round(speed)} km/h
           </span>
         )}
@@ -253,18 +253,18 @@ export const LiveTrackingMap: React.FC<LiveTrackingMapProps> = ({
 
       {/* Bottom Route Cards */}
       <div className="absolute bottom-3 left-3 right-3 z-[1000] grid grid-cols-2 gap-2">
-        <div className="bg-white/95 backdrop-blur-md p-2.5 rounded-2xl border border-slate-200/80 shadow-md">
-          <div className="text-[10px] uppercase font-extrabold text-amber-700 flex items-center gap-1">
+        <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-md">
+          <div className="text-[10px] uppercase font-extrabold text-amber-700 dark:text-amber-400 flex items-center gap-1">
             <Building className="w-3 h-3" /> Duka (Pickup)
           </div>
-          <div className="text-xs font-bold text-slate-900 truncate">{stationeryName}</div>
+          <div className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">{stationeryName}</div>
         </div>
 
-        <div className="bg-white/95 backdrop-blur-md p-2.5 rounded-2xl border border-slate-200/80 shadow-md">
-          <div className="text-[10px] uppercase font-extrabold text-emerald-700 flex items-center gap-1">
+        <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-md">
+          <div className="text-[10px] uppercase font-extrabold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
             <Home className="w-3 h-3" /> Mteja (Dropoff)
           </div>
-          <div className="text-xs font-bold text-slate-900 truncate">{customerAddress}</div>
+          <div className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">{customerAddress}</div>
         </div>
       </div>
     </div>

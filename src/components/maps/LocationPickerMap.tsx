@@ -209,13 +209,13 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
       {/* Top Bar: Search and Locate Me Button */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
         <form onSubmit={handleSearchLocation} className="relative flex-1">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+          <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3 top-3" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Tafuta eneo... (mfano: UDSM, Mwenge, Posta, Kariakoo, CIVE Dodoma)"
-            className="w-full pl-9 pr-20 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 bg-white"
+            className="w-full pl-9 pr-20 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-slate-100"
           />
           <button
             type="submit"
@@ -240,12 +240,12 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
       </div>
 
       {/* Real Interactive Leaflet Container */}
-      <div className="relative w-full h-[280px] sm:h-[320px] rounded-2xl overflow-hidden border-2 border-brand-500/40 shadow-md bg-slate-100">
+      <div className="relative w-full h-[280px] sm:h-[320px] rounded-2xl overflow-hidden border-2 border-brand-500/40 shadow-md bg-slate-100 dark:bg-slate-800">
         {lat === null || lng === null ? (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-100 dark:from-slate-800 to-slate-200 dark:to-slate-700">
             <div className="text-center space-y-2">
               <Loader2 className="w-6 h-6 animate-spin mx-auto text-brand-600" />
-              <p className="text-xs font-semibold text-slate-600">Tafuta au ruhusu GPS ili kuonyesha ramani</p>
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">Tafuta au ruhusu GPS ili kuonyesha ramani</p>
             </div>
           </div>
         ) : (
@@ -253,7 +253,7 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
         )}
 
         {/* Live GPS Coordinates Overlay */}
-        <div className="absolute top-3 left-3 z-[1000] bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl text-[11px] font-mono text-slate-800 shadow-md border border-slate-200/80 flex items-center gap-1.5">
+        <div className="absolute top-3 left-3 z-[1000] bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-3 py-1.5 rounded-xl text-[11px] font-mono text-slate-800 dark:text-slate-200 shadow-md border border-slate-200/80 dark:border-slate-700 flex items-center gap-1.5">
           <MapPin className="w-3.5 h-3.5 text-brand-600" />
           <span>
             {lat !== null && lng !== null ? `${lat.toFixed(5)}, ${lng.toFixed(5)}` : 'Loading GPS...'}
@@ -261,11 +261,11 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
         </div>
 
         {/* Helper Hint */}
-        <div className="absolute bottom-3 left-3 right-3 z-[1000] bg-white/95 backdrop-blur-md p-2.5 rounded-xl text-xs text-slate-700 shadow-md border border-slate-200/80 flex items-center justify-between">
+        <div className="absolute bottom-3 left-3 right-3 z-[1000] bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-2.5 rounded-xl text-xs text-slate-700 dark:text-slate-300 shadow-md border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
           <span className="line-clamp-1 text-[11px]">
             📍 {resolvedAddress || 'Bofya au buruta pin kuchagua eneo kamili'}
           </span>
-          <span className="text-[10px] font-bold text-brand-700 uppercase whitespace-nowrap pl-2">
+          <span className="text-[10px] font-bold text-brand-700 dark:text-brand-400 uppercase whitespace-nowrap pl-2">
             Pin Ipo Hapa ✓
           </span>
         </div>
