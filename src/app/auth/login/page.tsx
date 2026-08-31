@@ -81,47 +81,47 @@ export default function LoginPage() {
 
   return (
     <div className="max-w-md mx-auto my-6 sm:my-12 animate-fadeIn">
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xl">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-xl">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center text-white mx-auto mb-3 shadow-lg shadow-brand-500/20">
             <Printer className="w-7 h-7" />
           </div>
-          <h1 className="text-2xl font-extrabold text-slate-900">Karibu Stationery Mkononi</h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Karibu Stationery Mkononi</h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Ingia kwenye akaunti yako kuendelea
           </p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
               Barua Pepe au Jina la Mtumiaji (Email / Username)
             </label>
             <div className="relative">
-              <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+              <User className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
               <input
                 type="text"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 placeholder="mfano: juma@gmail.com au jumahamisi"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                 required
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
               Nenosiri (Password)
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+              <Lock className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                 required
               />
             </div>
@@ -139,11 +139,11 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <div className="text-center mt-6 pt-6 border-t border-slate-100">
-          <p className="text-xs text-slate-600 flex items-center justify-center gap-1.5">
+        <div className="text-center mt-6 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <p className="text-xs text-slate-600 dark:text-slate-400 flex items-center justify-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-brand-600" />
             Huna akaunti bado?{' '}
-            <Link href="/auth/register" className="font-bold text-brand-600 hover:text-brand-700">
+            <Link href="/auth/register" className="font-bold text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
               Jisajili hapa
             </Link>
           </p>

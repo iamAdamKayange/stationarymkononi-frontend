@@ -59,40 +59,40 @@ export default function StationeryDetailPage() {
     <div className="max-w-4xl mx-auto space-y-6 animate-fadeIn">
       <Link
         href="/stationeries"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 mb-2"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 mb-2"
       >
         <ArrowLeft className="w-4 h-4" /> Rudi kwenye orodha ya maduka
       </Link>
 
       {/* Shop Profile Header Banner */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div className="flex items-start gap-4">
           <div className="w-16 h-16 rounded-2xl bg-brand-600 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-brand-500/20 flex-shrink-0">
             <Compass className="w-8 h-8" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">{shop.name}</h1>
+              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">{shop.name}</h1>
               <Badge variant={shop.isOpen ? 'success' : 'neutral'} size="sm">
                 {shop.isOpen ? 'Wazi' : 'Imefungwa'}
               </Badge>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 mt-2">
+            <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mt-2">
               <span className="flex items-center gap-1 text-amber-600 font-bold">
                 <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                 {shop.avgRating.toFixed(1)} ({shop.totalRatings} reviews)
               </span>
               <span className="flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                 {shop.address}, {shop.city}
               </span>
               <span className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-slate-400" />
+                <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                 {shop.openingHours}
               </span>
               <span className="flex items-center gap-1">
-                <Phone className="w-3.5 h-3.5 text-slate-400" />
+                <Phone className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                 {shop.phoneNumber}
               </span>
             </div>
@@ -107,13 +107,13 @@ export default function StationeryDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200">
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800">
         <button
           onClick={() => setActiveTab('SERVICES')}
           className={`pb-3 px-4 text-sm font-bold border-b-2 transition-all ${
             activeTab === 'SERVICES'
-              ? 'border-brand-600 text-brand-700'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-brand-600 text-brand-700 dark:text-brand-400'
+              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           Huduma za Printing
@@ -122,8 +122,8 @@ export default function StationeryDetailPage() {
           onClick={() => setActiveTab('PRODUCTS')}
           className={`pb-3 px-4 text-sm font-bold border-b-2 transition-all ${
             activeTab === 'PRODUCTS'
-              ? 'border-brand-600 text-brand-700'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-brand-600 text-brand-700 dark:text-brand-400'
+              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           Bidhaa za Dukani ({shop.products?.length || 0})
@@ -132,26 +132,26 @@ export default function StationeryDetailPage() {
 
       {/* TAB: Printing Services */}
       {activeTab === 'SERVICES' && (
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-          <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
+          <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Printer className="w-4 h-4 text-brand-600" />
             Orodha ya Huduma na Bei za Uchapaji
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {shop.services?.map((srv) => (
-              <div key={srv.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+              <div key={srv.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
                 <div>
-                  <div className="font-bold text-slate-900 text-xs sm:text-sm">{srv.name}</div>
-                  <div className="text-[11px] text-slate-500 mt-0.5">
+                  <div className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">{srv.name}</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                     {srv.paperSize} • {srv.colorOption === 'COLOR' ? 'Full Colour' : 'Black & White'}
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm font-extrabold text-brand-700">
+                  <div className="text-sm font-extrabold text-brand-700 dark:text-brand-400">
                     TZS {srv.pricePerPage > 0 ? `${srv.pricePerPage}/pg` : `${srv.bindingPrice} /kitabu`}
                   </div>
-                  <span className="text-[10px] text-emerald-600 font-semibold">Inapatikana ✓</span>
+                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">Inapatikana ✓</span>
                 </div>
               </div>
             ))}

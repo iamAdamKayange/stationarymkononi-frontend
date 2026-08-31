@@ -17,6 +17,7 @@ import {
   Star,
   DollarSign,
   TrendingUp,
+  Settings,
 } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
@@ -212,7 +213,11 @@ export default function StationeryDashboardPage() {
       <div className="bg-gradient-to-r from-slate-900 to-brand-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-2xl bg-amber-500 flex items-center justify-center text-white font-extrabold text-2xl shadow-lg shadow-amber-500/20">
-            <Building className="w-8 h-8" />
+            {shop?.logoUrl ? (
+              <img src={shop.logoUrl} alt="Logo" className="w-full h-full object-cover rounded-2xl" />
+            ) : (
+              <Building className="w-8 h-8" />
+            )}
           </div>
           <div>
             <div className="flex items-center gap-2">
@@ -227,14 +232,21 @@ export default function StationeryDashboardPage() {
           </div>
         </div>
 
-        <Button
-          variant="primary"
-          size="md"
-          onClick={() => setProductModalOpen(true)}
-          leftIcon={<Plus className="w-4 h-4" />}
-        >
-          Ongeza Bidhaa Dukani
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link href="/dashboard/stationery/profile">
+            <Button variant="outline" size="md" className="bg-white/10 hover:bg-white/20 text-white border-white/20">
+              Edit Profile
+            </Button>
+          </Link>
+          <Button
+            variant="primary"
+            size="md"
+            onClick={() => setProductModalOpen(true)}
+            leftIcon={<Plus className="w-4 h-4" />}
+          >
+            Ongeza Bidhaa Dukani
+          </Button>
+        </div>
       </div>
 
       {/* KPI Cards */}

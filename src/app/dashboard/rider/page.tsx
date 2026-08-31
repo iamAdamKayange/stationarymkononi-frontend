@@ -13,6 +13,7 @@ import {
   Package,
   ArrowRight,
   ShieldCheck,
+  Settings,
 } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
@@ -161,7 +162,11 @@ export default function RiderDashboardPage() {
       <div className="bg-gradient-to-r from-blue-900 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-extrabold text-2xl shadow-lg shadow-blue-500/20">
-            <Bike className="w-8 h-8" />
+            {user.avatarUrl ? (
+              <img src={user.avatarUrl} alt="Profile" className="w-full h-full object-cover rounded-2xl" />
+            ) : (
+              <Bike className="w-8 h-8" />
+            )}
           </div>
           <div>
             <div className="flex items-center gap-2">
@@ -177,11 +182,17 @@ export default function RiderDashboardPage() {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={handleToggleOnline}
-          className={`px-5 py-3 rounded-2xl text-xs font-extrabold flex items-center gap-2 transition-all shadow-md active:scale-95 ${
-            isOnline
+        <div className="flex items-center gap-2">
+          <Link href="/dashboard/rider/profile">
+            <Button variant="outline" size="md" className="bg-white/10 hover:bg-white/20 text-white border-white/20">
+              Edit Profile
+            </Button>
+          </Link>
+          <button
+            type="button"
+            onClick={handleToggleOnline}
+            className={`px-5 py-3 rounded-2xl text-xs font-extrabold flex items-center gap-2 transition-all shadow-md active:scale-95 ${
+              isOnline
               ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/30'
               : 'bg-slate-700 hover:bg-slate-600 text-slate-200'
           }`}

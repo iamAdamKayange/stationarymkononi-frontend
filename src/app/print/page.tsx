@@ -176,16 +176,16 @@ export default function PrintPage() {
       <div className="flex items-center justify-center gap-2 sm:gap-4 text-xs font-semibold">
         <div
           className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl transition-all ${
-            step === 1 ? 'bg-brand-600 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200'
+            step === 1 ? 'bg-brand-600 text-white shadow-sm' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
           }`}
         >
           <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[10px]">1</span>
           Pakia & Chagua Options
         </div>
-        <ArrowRight className="w-4 h-4 text-slate-300" />
+        <ArrowRight className="w-4 h-4 text-slate-300 dark:text-slate-600" />
         <div
           className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl transition-all ${
-            step === 2 ? 'bg-brand-600 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200'
+            step === 2 ? 'bg-brand-600 text-white shadow-sm' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
           }`}
         >
           <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[10px]">2</span>
@@ -199,8 +199,8 @@ export default function PrintPage() {
           {/* Left: Upload & Options */}
           <div className="lg:col-span-2 space-y-6">
             {/* File Upload Component */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-              <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
+              <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 <UploadCloud className="w-4 h-4 text-brand-600" />
                 1. Pakia Nyaraka Yako (Document Upload)
               </h3>
@@ -209,8 +209,8 @@ export default function PrintPage() {
             </div>
 
             {/* Printing Options */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-5">
-              <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-5">
+              <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 <Printer className="w-4 h-4 text-brand-600" />
                 2. Machaguo ya Uchapaji (Printing Options)
               </h3>
@@ -218,11 +218,11 @@ export default function PrintPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Paper Size */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">Ukubwa wa Karatasi (Paper Size)</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Ukubwa wa Karatasi (Paper Size)</label>
                   <select
                     value={paperSize}
                     onChange={(e) => setPaperSize(e.target.value as PaperSize)}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-slate-100"
                   >
                     <option value="A4">A4 (Standard Document)</option>
                     <option value="A3">A3 (Kubwa / Poster / Blueprint)</option>
@@ -232,11 +232,11 @@ export default function PrintPage() {
 
                 {/* Color Option */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">Rangi ya Uchapaji (Color)</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Rangi ya Uchapaji (Color)</label>
                   <select
                     value={colorOption}
                     onChange={(e) => setColorOption(e.target.value as ColorOption)}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-slate-100"
                   >
                     <option value="BLACK_AND_WHITE">Nyeusi na Nyeupe (Black & White) - TZS 100/pg</option>
                     <option value="COLOR">Rangi Kamili (Full Colour) - TZS 500/pg</option>
@@ -245,11 +245,11 @@ export default function PrintPage() {
 
                 {/* Sides */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">Upande wa Karatasi (Sides)</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Upande wa Karatasi (Sides)</label>
                   <select
                     value={sideOption}
                     onChange={(e) => setSideOption(e.target.value as SideOption)}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-slate-100"
                   >
                     <option value="SINGLE_SIDED">Upande Mmoja tu (Single-Sided)</option>
                     <option value="DOUBLE_SIDED">Pande Zote Mbili (Double-Sided)</option>
@@ -258,11 +258,11 @@ export default function PrintPage() {
 
                 {/* Orientation */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">Mkao (Orientation)</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Mkao (Orientation)</label>
                   <select
                     value={orientation}
                     onChange={(e) => setOrientation(e.target.value as OrientationOption)}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-slate-100"
                   >
                     <option value="PORTRAIT">Wima (Portrait)</option>
                     <option value="LANDSCAPE">Mlalo (Landscape)</option>
@@ -271,11 +271,11 @@ export default function PrintPage() {
 
                 {/* Binding */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">Ufungaji / Jalada (Binding)</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Ufungaji / Jalada (Binding)</label>
                   <select
                     value={binding}
                     onChange={(e) => setBinding(e.target.value as BindingType)}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-slate-100"
                   >
                     <option value="NONE">Bila Binding (Hakuna) - TZS 0</option>
                     <option value="SPIRAL">Spiral Binding (Plastic Coil) - TZS 1,500</option>
@@ -287,27 +287,27 @@ export default function PrintPage() {
 
                 {/* Number of Copies */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">Idadi ya Nakala (Copies)</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Idadi ya Nakala (Copies)</label>
                   <input
                     type="number"
                     min={1}
                     max={100}
                     value={copies}
                     onChange={(e) => setCopies(parseInt(e.target.value || '1', 10))}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-slate-100"
                   />
                 </div>
               </div>
 
               {/* Custom Instructions */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">Maelekezo ya Ziada (Hiari)</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Maelekezo ya Ziada (Hiari)</label>
                 <textarea
                   rows={2}
                   value={customNotes}
                   onChange={(e) => setCustomNotes(e.target.value)}
                   placeholder="mfano: Chapa kuanzia ukurasa wa 5 hadi 20 pekee au tumia karatasi nzito kwenye cover."
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100"
                 />
               </div>
             </div>
@@ -315,30 +315,30 @@ export default function PrintPage() {
 
           {/* Right: Live Price Summary Card */}
           <div>
-            <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-md sticky top-24 space-y-4">
-              <h3 className="font-bold text-sm text-slate-900 border-b border-slate-100 pb-3">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-md sticky top-24 space-y-4">
+              <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 border-b border-slate-100 dark:border-slate-800 pb-3">
                 Mchanganuo wa Bei (Live Calculation)
               </h3>
 
-              <div className="space-y-2.5 text-xs text-slate-600">
+              <div className="space-y-2.5 text-xs text-slate-600 dark:text-slate-400">
                 <div className="flex items-center justify-between">
                   <span>Kurasa:</span>
-                  <span className="font-semibold text-slate-900">{uploadedDoc ? uploadedDoc.pageCount : 1}</span>
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">{uploadedDoc ? uploadedDoc.pageCount : 1}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Nakala (Copies):</span>
-                  <span className="font-semibold text-slate-900">{copies}</span>
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">{copies}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Gharama ya Karatasi:</span>
-                  <span className="font-semibold text-slate-900">TZS {pricing.printingTotal.toLocaleString()}</span>
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">TZS {pricing.printingTotal.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Gharama ya Binding:</span>
-                  <span className="font-semibold text-slate-900">TZS {pricing.bindingCost.toLocaleString()}</span>
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">TZS {pricing.bindingCost.toLocaleString()}</span>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between font-bold text-sm text-brand-700">
+                <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between font-bold text-sm text-brand-700 dark:text-brand-400">
                   <span>JUMLA YA PRINTING:</span>
                   <span className="text-base">TZS {pricing.totalCost.toLocaleString()}</span>
                 </div>
@@ -364,35 +364,35 @@ export default function PrintPage() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-slate-900">Oda imeongezwa kwenye kikapu!</h2>
-              <p className="text-xs text-slate-500">Oda yako itachapwa na kuwasilishwa na APEX Digital & Printing Express</p>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Oda imeongezwa kwenye kikapu!</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Oda yako itachapwa na kuwasilishwa na APEX Digital & Printing Express</p>
             </div>
             <Button variant="outline" size="sm" onClick={() => setStep(1)}>
               Pakia Nyaraka Nyingine
             </Button>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-brand-100 flex items-center justify-center">
-                <CheckCircle2 className="w-8 h-8 text-brand-600" />
+              <div className="w-16 h-16 rounded-2xl bg-brand-100 dark:bg-brand-950/40 flex items-center justify-center">
+                <CheckCircle2 className="w-8 h-8 text-brand-600 dark:text-brand-400" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900">{uploadedDoc?.fileName}</h3>
-                <p className="text-xs text-slate-500">
+                <h3 className="font-bold text-slate-900 dark:text-slate-100">{uploadedDoc?.fileName}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   {uploadedDoc?.pageCount} kurasa • TZS {pricing.totalCost.toLocaleString()}
                 </p>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100">
+            <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-600">Duka la kuchapa:</span>
-                <span className="font-bold text-brand-700">{apexStationery?.name}</span>
+                <span className="text-slate-600 dark:text-slate-400">Duka la kuchapa:</span>
+                <span className="font-bold text-brand-700 dark:text-brand-400">{apexStationery?.name}</span>
               </div>
               <div className="flex items-center justify-between text-sm mt-2">
-                <span className="text-slate-600">Anuani:</span>
-                <span className="font-medium text-slate-900">{apexStationery?.address}</span>
+                <span className="text-slate-600 dark:text-slate-400">Anuani:</span>
+                <span className="font-medium text-slate-900 dark:text-slate-100">{apexStationery?.address}</span>
               </div>
             </div>
 

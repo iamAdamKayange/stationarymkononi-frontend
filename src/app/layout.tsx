@@ -16,6 +16,23 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
   themeColor: '#16a34a',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Stationery Mkononi',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    icon: [
+      { url: '/icons/icon-192.svg', sizes: '192x192', type: 'image/svg+xml' },
+      { url: '/icons/icon-512.svg', sizes: '512x512', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/icons/icon-192.svg', sizes: '192x192', type: 'image/svg+xml' },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -41,6 +58,16 @@ export default function RootLayout({
             `,
           }}
         />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Stationery Mkononi" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="application-name" content="Stationery Mkononi" />
+        <meta name="theme-color" content="#16a34a" />
+        <meta name="msapplication-TileColor" content="#16a34a" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
+        <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg" />
       </head>
       <body className="min-h-screen flex flex-col overflow-x-hidden bg-slate-50 dark:bg-slate-950 dark:text-slate-50 transition-colors duration-200">
         <SettingsInitializer />

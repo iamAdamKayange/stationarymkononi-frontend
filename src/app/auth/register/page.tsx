@@ -80,23 +80,23 @@ export default function RegisterPage() {
 
   return (
     <div className="max-w-xl mx-auto my-6 sm:my-10 animate-fadeIn">
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xl">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-xl">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-extrabold text-slate-900">Fungua Akaunti Mpya</h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Fungua Akaunti Mpya</h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Chagua aina ya akaunti unayotaka kufungua
           </p>
         </div>
 
         {/* Role Selection Tabs - Stationery registration removed for production */}
-        <div className="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 rounded-2xl mb-6">
+        <div className="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 dark:bg-slate-800 rounded-2xl mb-6">
           <button
             type="button"
             onClick={() => setSelectedRole('CUSTOMER')}
             className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 ${
               selectedRole === 'CUSTOMER'
-                ? 'bg-white text-brand-700 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-700 text-brand-700 dark:text-brand-400 shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             <User className="w-4 h-4 text-brand-600" />
@@ -108,8 +108,8 @@ export default function RegisterPage() {
             onClick={() => setSelectedRole('DELIVERY_RIDER')}
             className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 ${
               selectedRole === 'DELIVERY_RIDER'
-                ? 'bg-white text-brand-700 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-700 text-brand-700 dark:text-brand-400 shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             <Bike className="w-4 h-4 text-blue-600" />
@@ -120,30 +120,30 @@ export default function RegisterPage() {
         <form onSubmit={handleRegister} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">Jina Kamili</label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Jina Kamili</label>
               <div className="relative">
-                <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                <User className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
                 <input
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Juma Hamisi"
-                  className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
+                  className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">Jina la Mtumiaji (Username)</label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Jina la Mtumiaji (Username)</label>
               <div className="relative">
-                <span className="text-slate-400 absolute left-3.5 top-2.5 text-sm">@</span>
+                <span className="text-slate-400 dark:text-slate-500 absolute left-3.5 top-2.5 text-sm">@</span>
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s+/g, ''))}
                   placeholder="jumahamisi"
-                  className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
+                  className="w-full pl-9 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                   required
                 />
               </div>
@@ -152,30 +152,30 @@ export default function RegisterPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">Barua Pepe (Email)</label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Barua Pepe (Email)</label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                <Mail className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="juma@example.com"
-                  className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
+                  className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">Namba ya Simu (Phone)</label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Namba ya Simu (Phone)</label>
               <div className="relative">
-                <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                <Phone className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
                 <input
                   type="tel"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="0755 123 456"
-                  className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
+                  className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                   required
                 />
               </div>
@@ -183,15 +183,15 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Nenosiri (Password)</label>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nenosiri (Password)</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+              <Lock className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Angalau herufi 6"
-                className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
+                className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                 minLength={6}
                 required
               />
@@ -200,15 +200,15 @@ export default function RegisterPage() {
 
           {/* Role specific inputs */}
           {selectedRole === 'DELIVERY_RIDER' && (
-            <div className="p-4 bg-blue-50/50 rounded-2xl border border-blue-200/80 space-y-3">
-              <h4 className="text-xs font-bold uppercase text-blue-800 tracking-wider">Taarifa za Chombo cha Usafiri</h4>
+            <div className="p-4 bg-blue-50/50 dark:bg-blue-950/20 rounded-2xl border border-blue-200/80 dark:border-blue-800 space-y-3">
+              <h4 className="text-xs font-bold uppercase text-blue-800 dark:text-blue-300 tracking-wider">Taarifa za Chombo cha Usafiri</h4>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-slate-700 mb-1">Aina ya Chombo</label>
+                  <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Aina ya Chombo</label>
                   <select
                     value={vehicleType}
                     onChange={(e) => setVehicleType(e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-blue-200 rounded-xl"
+                    className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-700 rounded-xl text-slate-900 dark:text-slate-100"
                   >
                     <option value="Motorcycle">Bodaboda (Pikipiki)</option>
                     <option value="Bicycle">Baiskeli</option>
@@ -216,13 +216,13 @@ export default function RegisterPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-700 mb-1">Namba ya Bamba (Plate No)</label>
+                  <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Namba ya Bamba (Plate No)</label>
                   <input
                     type="text"
                     value={vehiclePlate}
                     onChange={(e) => setVehiclePlate(e.target.value)}
                     placeholder="MC 482 DHZ"
-                    className="w-full px-3 py-2 text-sm bg-white border border-blue-200 rounded-xl"
+                    className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-700 rounded-xl text-slate-900 dark:text-slate-100"
                     required
                   />
                 </div>
@@ -242,10 +242,10 @@ export default function RegisterPage() {
           </Button>
         </form>
 
-        <div className="text-center mt-6 pt-6 border-t border-slate-100">
-          <p className="text-xs text-slate-600">
+        <div className="text-center mt-6 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <p className="text-xs text-slate-600 dark:text-slate-400">
             Tayari una akaunti?{' '}
-            <Link href="/auth/login" className="font-bold text-brand-600 hover:text-brand-700">
+            <Link href="/auth/login" className="font-bold text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
               Ingia hapa
             </Link>
           </p>

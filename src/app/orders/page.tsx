@@ -51,8 +51,8 @@ export default function OrdersListPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">Oda Zangu (My Orders)</h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">Oda Zangu (My Orders)</h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Fuatilia maendeleo ya uchapaji na safari ya rider kwenye ramani ya moja kwa moja.
           </p>
         </div>
@@ -82,11 +82,11 @@ export default function OrdersListPage() {
             return (
               <div
                 key={order.id}
-                className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs hover:shadow-md transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-md transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
               >
                 <div className="space-y-2 flex-1">
                   <div className="flex items-center gap-2.5">
-                    <span className="font-extrabold text-slate-900 text-sm sm:text-base">
+                    <span className="font-extrabold text-slate-900 dark:text-slate-100 text-sm sm:text-base">
                       Oda #{order.orderNumber}
                     </span>
                     <Badge
@@ -105,29 +105,29 @@ export default function OrdersListPage() {
                     </Badge>
                   </div>
 
-                  <div className="text-xs text-slate-500 space-y-1">
+                  <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
                     <div className="flex items-center gap-1.5">
-                      <Building className="w-3.5 h-3.5 text-slate-400" />
+                      <Building className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                       <span>{order.stationery?.name}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-slate-400" />
+                      <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                       <span>{new Date(order.createdAt).toLocaleString('sw-TZ')}</span>
                     </div>
                   </div>
 
                   {/* Items snapshot */}
-                  <div className="text-xs text-slate-700 font-medium">
+                  <div className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                     {order.orderItems?.map((item) => item.title).join(', ')}
                   </div>
                 </div>
 
-                <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-0 border-slate-100 gap-2">
+                <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-0 border-slate-100 dark:border-slate-800 gap-2">
                   <div className="text-left sm:text-right">
-                    <span className="text-sm font-extrabold text-slate-900 block">
+                    <span className="text-sm font-extrabold text-slate-900 dark:text-slate-100 block">
                       TZS {order.totalAmount.toLocaleString()}
                     </span>
-                    <span className="text-[10px] text-slate-400">
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500">
                       {order.payment?.paymentMethod || 'M-Pesa'}
                     </span>
                   </div>
