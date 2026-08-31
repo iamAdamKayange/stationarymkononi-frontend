@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { User, Mail, Phone, Lock, Building, Bike, ArrowRight } from 'lucide-react';
+import { User, Mail, Phone, Lock, Bike, ArrowRight } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { api } from '../../../lib/api';
 import { useAuthStore } from '../../../store/useAuthStore';
@@ -13,17 +13,12 @@ export default function RegisterPage() {
   const router = useRouter();
   const setAuth = useAuthStore((state) => state.setAuth);
 
-  const [selectedRole, setSelectedRole] = useState<'CUSTOMER' | 'STATIONERY' | 'DELIVERY_RIDER'>('CUSTOMER');
+  const [selectedRole, setSelectedRole] = useState<'CUSTOMER' | 'DELIVERY_RIDER'>('CUSTOMER');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
-
-  // Stationery shop fields
-  const [shopName, setShopName] = useState('');
-  const [shopAddress, setShopAddress] = useState('');
-  const [shopCity, setShopCity] = useState('Dar es Salaam');
 
   // Rider fields
   const [vehicleType, setVehicleType] = useState('Motorcycle');
@@ -45,16 +40,7 @@ export default function RegisterPage() {
         role: selectedRole,
       };
 
-      if (selectedRole === 'STATIONERY') {
-        payload.stationeryDetails = {
-          name: shopName || `${fullName}'s Stationery`,
-          address: shopAddress || 'Dar es Salaam',
-          city: shopCity,
-          latitude: -6.7785,
-          longitude: 39.2235,
-          openingHours: '08:00 AM - 08:00 PM',
-        };
-      } else if (selectedRole === 'DELIVERY_RIDER') {
+      if (selectedRole === 'DELIVERY_RIDER') {
         payload.riderDetails = {
           vehicleType,
           vehiclePlate: vehiclePlate || 'MC 123 TZ',
@@ -80,9 +66,7 @@ export default function RegisterPage() {
       setAuth(user, accessToken, refreshToken);
       toast.success('Usajili umekamilika vizuri! 🎉');
 
-      if (selectedRole === 'STATIONERY') {
-        router.push('/dashboard/stationery');
-      } else if (selectedRole === 'DELIVERY_RIDER') {
+      if (selectedRole === 'DELIVERY_RIDER') {
         router.push('/dashboard/rider');
       } else {
         router.push('/dashboard/customer');
@@ -104,8 +88,8 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        {/* Role Selection Tabs */}
-        <div className="grid grid-cols-3 gap-2 p-1.5 bg-slate-100 rounded-2xl mb-6">
+        {/* Role Selection Tabs - Stationery registration removed for production */}
+        <div className="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 rounded-2xl mb-6">
           <button
             type="button"
             onClick={() => setSelectedRole('CUSTOMER')}
@@ -117,19 +101,6 @@ export default function RegisterPage() {
           >
             <User className="w-4 h-4 text-brand-600" />
             <span>Mteja (Customer)</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setSelectedRole('STATIONERY')}
-            className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 ${
-              selectedRole === 'STATIONERY'
-                ? 'bg-white text-brand-700 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <Building className="w-4 h-4 text-amber-600" />
-            <span>Stationery Shop</span>
           </button>
 
           <button
@@ -228,34 +199,6 @@ export default function RegisterPage() {
           </div>
 
           {/* Role specific inputs */}
-          {selectedRole === 'STATIONERY' && (
-            <div className="p-4 bg-amber-50/50 rounded-2xl border border-amber-200/80 space-y-3">
-              <h4 className="text-xs font-bold uppercase text-amber-800 tracking-wider">Taarifa za Duka la Stationery</h4>
-              <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">Jina la Duka</label>
-                <input
-                  type="text"
-                  value={shopName}
-                  onChange={(e) => setShopName(e.target.value)}
-                  placeholder="mfano: Apex Digital Printing"
-                  className="w-full px-3 py-2 text-sm bg-white border border-amber-200 rounded-xl focus:ring-2 focus:ring-brand-500"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">Anuani ya Duka</label>
-                <input
-                  type="text"
-                  value={shopAddress}
-                  onChange={(e) => setShopAddress(e.target.value)}
-                  placeholder="mfano: Sam Nujoma Rd, Mwenge"
-                  className="w-full px-3 py-2 text-sm bg-white border border-amber-200 rounded-xl focus:ring-2 focus:ring-brand-500"
-                  required
-                />
-              </div>
-            </div>
-          )}
-
           {selectedRole === 'DELIVERY_RIDER' && (
             <div className="p-4 bg-blue-50/50 rounded-2xl border border-blue-200/80 space-y-3">
               <h4 className="text-xs font-bold uppercase text-blue-800 tracking-wider">Taarifa za Chombo cha Usafiri</h4>

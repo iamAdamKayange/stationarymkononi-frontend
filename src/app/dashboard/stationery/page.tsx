@@ -22,19 +22,19 @@ import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
 import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
 import { Modal } from '../../../components/ui/Modal';
+import { DocumentList } from '../../../components/ui/DocumentList';
 import { useAuthStore } from '../../../store/useAuthStore';
 import { api } from '../../../lib/api';
 import { getSocket } from '../../../lib/socket';
-import { Order, Stationery, Product, DocumentFile } from '../../../types';
+import { Order, Stationery, Product } from '../../../types';
 import toast from 'react-hot-toast';
 
 export default function StationeryDashboardPage() {
   const { user, isAuthenticated } = useAuthStore();
   const [orders, setOrders] = useState<Order[]>([]);
   const [shop, setShop] = useState<Stationery | null>(null);
-  const [documents, setDocuments] = useState<DocumentFile[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'PENDING' | 'PRINTING' | 'READY' | 'ALL' | 'CATALOG'>('PENDING');
+  const [activeTab, setActiveTab] = useState<'PENDING' | 'PRINTING' | 'READY' | 'ALL' | 'CATALOG' | 'DOCUMENTS'>('PENDING');
 
   // Add Product Modal State
   const [productModalOpen, setProductModalOpen] = useState(false);
@@ -49,11 +49,10 @@ export default function StationeryDashboardPage() {
 
   const loadData = async () => {
     try {
-      const [userRes, ordersRes, catsRes, docsRes] = await Promise.all([
+      const [userRes, ordersRes, catsRes] = await Promise.all([
         api.get('/auth/me') as Promise<{ data: { stationery?: Stationery } }>,
         api.get('/orders') as Promise<{ data: Order[] }>,
         api.get('/products/categories') as Promise<{ data: Array<{ id: string; name: string }> }>,
-        api.get('/documents?take=12') as Promise<{ data: DocumentFile[] }>,
       ]);
 
       if (userRes?.data?.stationery) setShop(userRes.data.stationery);
@@ -62,7 +61,6 @@ export default function StationeryDashboardPage() {
         setCategories(catsRes.data);
         if (catsRes.data.length > 0) setNewProductCatId(catsRes.data[0].id);
       }
-      if (docsRes?.data) setDocuments(docsRes.data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -142,25 +140,6 @@ export default function StationeryDashboardPage() {
 
   const handleRemoveImage = (indexToRemove: number) => {
     setNewProductImages((prev) => prev.filter((_, idx) => idx !== indexToRemove));
-  };
-
-  const downloadDocument = async (docId: string, fileName: string) => {
-    try {
-      const response = (await api.get(`/documents/${docId}/download`, {
-        responseType: 'blob',
-      })) as Blob;
-      const blob = response as Blob;
-      const objectUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = objectUrl;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(objectUrl);
-    } catch (err) {
-      toast.error((err as Error).message || 'Imeshindikana kupakua document');
-    }
   };
 
   const handleCreateProduct = async (e: React.FormEvent) => {
@@ -300,63 +279,14 @@ export default function StationeryDashboardPage() {
           </Button>
         </div>
 
-        {documents.slice(0, 8).length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-8 text-center">
-            <p className="text-xs text-slate-500">Bado hakuna documents mpya zilizoonekana hapa.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {documents.slice(0, 8).map((doc) => (
-              <div
-                key={doc.id}
-                className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 flex flex-col gap-3"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center flex-shrink-0">
-                    <Printer className="w-5 h-5" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-bold text-slate-900 text-sm leading-snug break-words">
-                        {doc.fileName}
-                      </h3>
-                      <Badge variant="neutral" size="sm" className="whitespace-nowrap">
-                        {doc.fileType.includes('pdf') ? 'PDF' : 'FILE'}
-                      </Badge>
-                    </div>
-                    <p className="text-[11px] text-slate-500 mt-1">
-                      {(doc.fileSize / 1024 / 1024).toFixed(1)} MB • Kurasa {doc.pageCount}
-                    </p>
-                    <p className="text-[11px] text-slate-400 mt-0.5">
-                      Imepakiwa na {doc.uploadedBy?.fullName || 'mtumiaji'} •{' '}
-                      {new Date(doc.createdAt).toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 min-w-[120px]"
-                    onClick={() => window.open(doc.viewUrl || doc.fileUrl, '_blank', 'noopener,noreferrer')}
-                    leftIcon={<Eye className="w-4 h-4" />}
-                  >
-                    Fungua
-                  </Button>
-                  <button
-                    type="button"
-                    onClick={() => downloadDocument(doc.id, doc.fileName)}
-                    className="inline-flex flex-1 min-w-[120px] items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-                  >
-                    <Download className="w-4 h-4 mr-1.5" />
-                    Pakua
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        <DocumentList 
+          stationeryId={shop?.id}
+          onDocumentSelect={(document) => {
+            // Handle document selection if needed
+            console.log('Selected document:', document);
+          }}
+          showFilters={true}
+        />
       </section>
 
       {/* Queue Tabs */}
@@ -400,6 +330,16 @@ export default function StationeryDashboardPage() {
           }`}
         >
           Oda Zote ({orders.length})
+        </button>
+        <button
+          onClick={() => setActiveTab('DOCUMENTS')}
+          className={`pb-3 px-4 text-xs font-bold border-b-2 whitespace-nowrap transition-all ${
+            activeTab === 'DOCUMENTS'
+              ? 'border-brand-600 text-brand-700'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          Nyaraka (Documents)
         </button>
       </div>
 
@@ -530,6 +470,17 @@ export default function StationeryDashboardPage() {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Documents Tab */}
+      {activeTab === 'DOCUMENTS' && (
+        <DocumentList 
+          stationeryId={shop?.id}
+          onDocumentSelect={(document) => {
+            console.log('Selected document in stationery dashboard:', document);
+          }}
+          showFilters={true}
+        />
       )}
 
       {/* Add Product Modal */}

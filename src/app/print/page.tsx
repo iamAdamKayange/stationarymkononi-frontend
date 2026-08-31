@@ -7,15 +7,12 @@ import {
   FileText,
   CheckCircle2,
   Printer,
-  Compass,
-  Star,
-  Layers,
   ArrowRight,
   Sparkles,
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
-import { Badge } from '../../components/ui/Badge';
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
+import { DocumentUpload } from '../../components/ui/DocumentUpload';
 import { api } from '../../lib/api';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useCartStore } from '../../store/useCartStore';
@@ -35,9 +32,7 @@ export default function PrintPage() {
   const { isAuthenticated } = useAuthStore();
   const addPrintJobToCart = useCartStore((state) => state.addPrintJob);
 
-  const [step, setStep] = useState<1 | 2 | 3>(1); // 1: Upload & Config, 2: Choose Stationery, 3: Success / Cart
-  const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
+  const [step, setStep] = useState<1 | 2>(1); // 1: Upload & Config, 2: Success / Cart (removed stationery selection for production)
   const [uploadedDoc, setUploadedDoc] = useState<DocumentUploadResponse | null>(null);
 
   // Printing Options State
@@ -51,10 +46,9 @@ export default function PrintPage() {
   const [pagesToPrint, setPagesToPrint] = useState('All');
   const [customNotes, setCustomNotes] = useState('');
 
-  // Stationeries
-  const [stationeries, setStationeries] = useState<Stationery[]>([]);
-  const [selectedStationery, setSelectedStationery] = useState<Stationery | null>(null);
-  const [loadingShops, setLoadingShops] = useState(false);
+  // APEX Stationery (primary stationery for production)
+  const [apexStationery, setApexStationery] = useState<Stationery | null>(null);
+  const [loadingApex, setLoadingApex] = useState(false);
 
   // Estimated Price breakdown
   const [pricing, setPricing] = useState({
@@ -93,63 +87,45 @@ export default function PrintPage() {
     });
   }, [uploadedDoc, paperSize, colorOption, sideOption, binding, copies]);
 
-  // Load Stationeries when moving to step 2
-  const handleProceedToShopSelect = async () => {
+  // Load APEX stationery on component mount
+  useEffect(() => {
+    const loadApexStationery = async () => {
+      setLoadingApex(true);
+      try {
+        const res = (await api.get('/stationeries')) as { data: Stationery[] };
+        if (res?.data && res.data.length > 0) {
+          // In single-stationery mode, API returns only APEX
+          setApexStationery(res.data[0]);
+        }
+      } catch (err) {
+        console.error('Failed to load APEX stationery:', err);
+      } finally {
+        setLoadingApex(false);
+      }
+    };
+
+    loadApexStationery();
+  }, []);
+
+  const handleProceedToCart = async () => {
     if (!uploadedDoc) {
       toast.error('Tafadhali pakia nyaraka kwanza');
       return;
     }
-    setStep(2);
-    setLoadingShops(true);
-    try {
-      const res = (await api.get('/stationeries')) as { data: Stationery[] };
-      if (res?.data) {
-        setStationeries(res.data);
-        if (res.data.length > 0 && !selectedStationery) {
-          setSelectedStationery(res.data[0]);
-        }
-      }
-    } catch (err) {
-      toast.error('Imeshindikana kupakia orodha ya stationery');
-    } finally {
-      setLoadingShops(false);
-    }
-  };
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (!selectedFile) return;
-
-    if (!isAuthenticated) {
-      toast.error('Tafadhali ingia kwenye akaunti yako ili ku-upload nyaraka');
-      router.push('/auth/login');
+    if (!apexStationery) {
+      toast.error('APEX Stationery haipatikani. Tafadhali jaribu tena.');
       return;
     }
+    setStep(2);
+  };
 
-    setFile(selectedFile);
-    setUploading(true);
-
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-
-    try {
-      const response = (await api.post('/documents/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })) as { data: DocumentUploadResponse };
-
-      setUploadedDoc(response.data);
-      toast.success(`Nyaraka '${response.data.fileName}' imepakiwa vizuri!`);
-    } catch (err) {
-      toast.error((err as Error).message || 'Kupakia nyaraka kumeshindikana');
-      setFile(null);
-    } finally {
-      setUploading(false);
-    }
+  const handleDocumentUploadSuccess = (document: DocumentUploadResponse) => {
+    setUploadedDoc(document);
   };
 
   const handleAddToCart = () => {
-    if (!uploadedDoc || !selectedStationery) {
-      toast.error('Tafadhali chagua stationery ya kuchapa');
+    if (!uploadedDoc || !apexStationery) {
+      toast.error('Tafadhali hakikisha nyaraka imepakiwa na APEX Stationery inapatikana');
       return;
     }
 
@@ -170,7 +146,7 @@ export default function PrintPage() {
         customNotes: customNotes.trim() || undefined,
         estimatedPrice: pricing.totalCost,
       },
-      selectedStationery
+      apexStationery
     );
 
     toast.success('Oda ya uchapaji imeongezwa kwenye kikapu! 🛒');
@@ -182,17 +158,17 @@ export default function PrintPage() {
       {/* Header */}
       <div className="bg-gradient-to-r from-brand-800 to-brand-600 rounded-3xl p-6 sm:p-8 text-white shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <Badge variant="brand" className="bg-white/20 text-white border-white/20 mb-2">
+          <div className="inline-block bg-white/20 text-white border-white/20 px-3 py-1 rounded-full text-xs font-bold mb-2">
             Document Printing Wizard
-          </Badge>
+          </div>
           <h1 className="text-xl sm:text-3xl font-extrabold">Uchapaji wa Nyaraka (Printing)</h1>
           <p className="text-xs sm:text-sm text-brand-100 mt-1">
-            Pakia document yako, chagua ukubwa, rangi na binding, kisha chagua stationery.
+            Pakia document yako, chagua ukubwa, rangi na binding. Oda yako itachapwa na APEX Digital & Printing Express.
           </p>
         </div>
         <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20">
           <Sparkles className="w-5 h-5 text-amber-300" />
-          <span className="text-xs font-bold">Bei Nafuu & Haraka</span>
+          <span className="text-xs font-bold">APEX Stationery Only</span>
         </div>
       </div>
 
@@ -213,7 +189,7 @@ export default function PrintPage() {
           }`}
         >
           <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[10px]">2</span>
-          Chagua Stationery
+          Weka Kwenye Kikapu
         </div>
       </div>
 
@@ -222,54 +198,14 @@ export default function PrintPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Upload & Options */}
           <div className="lg:col-span-2 space-y-6">
-            {/* File Dropzone */}
+            {/* File Upload Component */}
             <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
               <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
                 <UploadCloud className="w-4 h-4 text-brand-600" />
                 1. Pakia Nyaraka Yako (Document Upload)
               </h3>
 
-              {!uploadedDoc ? (
-                <label className="border-2 border-dashed border-slate-300 hover:border-brand-500 bg-slate-50/50 hover:bg-brand-50/30 rounded-2xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all">
-                  <UploadCloud className="w-10 h-10 text-brand-600 mb-2 animate-bounce" />
-                  <span className="text-sm font-bold text-slate-800">
-                    {uploading ? 'Inapakia nyaraka...' : 'Bonyeza au buruta nyaraka hapa'}
-                  </span>
-                  <span className="text-xs text-slate-400 mt-1">
-                    PDF, DOC, DOCX, JPG, PNG (Upeo wa 50MB)
-                  </span>
-                  <input
-                    type="file"
-                    onChange={handleFileUpload}
-                    disabled={uploading}
-                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                    className="hidden"
-                  />
-                </label>
-              ) : (
-                <div className="flex items-center justify-between p-4 bg-brand-50 rounded-2xl border border-brand-200">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold">
-                      <FileText className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold text-slate-900 line-clamp-1">{uploadedDoc.fileName}</h4>
-                      <p className="text-[11px] text-brand-800">
-                        Ukurasa {uploadedDoc.pageCount} • {(uploadedDoc.fileSize / (1024 * 1024)).toFixed(2)} MB
-                      </p>
-                    </div>
-                  </div>
-                  <label className="text-xs font-bold text-brand-700 hover:underline cursor-pointer">
-                    Badilisha
-                    <input
-                      type="file"
-                      onChange={handleFileUpload}
-                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                      className="hidden"
-                    />
-                  </label>
-                </div>
-              )}
+              <DocumentUpload onUploadSuccess={handleDocumentUploadSuccess} />
             </div>
 
             {/* Printing Options */}
@@ -412,93 +348,62 @@ export default function PrintPage() {
                 variant="primary"
                 size="lg"
                 className="w-full mt-4"
-                onClick={handleProceedToShopSelect}
-                disabled={!uploadedDoc || uploading}
+                onClick={handleProceedToCart}
+                disabled={!uploadedDoc || !apexStationery}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
               >
-                Chagua Stationery
+                Weka Kwenye Kikapu (APEX)
               </Button>
             </div>
           </div>
         </div>
       )}
 
-      {/* STEP 2: Choose Stationery Shop */}
+      {/* STEP 2: Success / Cart */}
       {step === 2 && (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-slate-900">Chagua Duka la Stationery</h2>
-              <p className="text-xs text-slate-500">Chagua duka litakalochapa oda yako na kuikabidhi kwa rider</p>
+              <h2 className="text-lg font-bold text-slate-900">Oda imeongezwa kwenye kikapu!</h2>
+              <p className="text-xs text-slate-500">Oda yako itachapwa na kuwasilishwa na APEX Digital & Printing Express</p>
             </div>
             <Button variant="outline" size="sm" onClick={() => setStep(1)}>
-              Rudi Nyuma
+              Pakia Nyaraka Nyingine
             </Button>
           </div>
 
-          {loadingShops ? (
-            <LoadingSpinner message="Inapakia maduka ya stationery..." />
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {stationeries.map((shop) => {
-                const isSelected = selectedStationery?.id === shop.id;
-                return (
-                  <div
-                    key={shop.id}
-                    onClick={() => setSelectedStationery(shop)}
-                    className={`p-5 rounded-3xl border transition-all cursor-pointer flex flex-col justify-between ${
-                      isSelected
-                        ? 'bg-brand-50/50 border-brand-500 ring-2 ring-brand-500 shadow-md'
-                        : 'bg-white border-slate-200 hover:border-slate-300 shadow-xs'
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant={shop.isOpen ? 'success' : 'neutral'} size="sm">
-                          {shop.isOpen ? 'Wazi Sasa' : 'Imefungwa'}
-                        </Badge>
-                        <div className="flex items-center gap-1 text-xs font-bold text-amber-600">
-                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                          {shop.avgRating.toFixed(1)}
-                        </div>
-                      </div>
-
-                      <h3 className="font-bold text-slate-900 text-base">{shop.name}</h3>
-                      <p className="text-xs text-slate-500 mt-1">{shop.address}</p>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                      <span className="font-semibold text-brand-700">Masaa: {shop.openingHours}</span>
-                      {isSelected ? (
-                        <span className="flex items-center gap-1 text-brand-600 font-bold">
-                          <CheckCircle2 className="w-4 h-4" /> Imechaguliwa
-                        </span>
-                      ) : (
-                        <span className="text-slate-400 font-medium">Bofya kuchagua</span>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Action Bar */}
-          <div className="p-4 bg-white rounded-2xl border border-slate-200 flex items-center justify-between">
-            <div>
-              <div className="text-xs text-slate-500">Duka Lililochaguliwa:</div>
-              <div className="font-bold text-slate-900 text-sm">
-                {selectedStationery?.name || 'Bado hujachagua duka'}
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-2xl bg-brand-100 flex items-center justify-center">
+                <CheckCircle2 className="w-8 h-8 text-brand-600" />
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-900">{uploadedDoc?.fileName}</h3>
+                <p className="text-xs text-slate-500">
+                  {uploadedDoc?.pageCount} kurasa • TZS {pricing.totalCost.toLocaleString()}
+                </p>
               </div>
             </div>
+
+            <div className="pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-slate-600">Duka la kuchapa:</span>
+                <span className="font-bold text-brand-700">{apexStationery?.name}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm mt-2">
+                <span className="text-slate-600">Anuani:</span>
+                <span className="font-medium text-slate-900">{apexStationery?.address}</span>
+              </div>
+            </div>
+
             <Button
               variant="primary"
               size="lg"
-              onClick={handleAddToCart}
-              disabled={!selectedStationery}
+              className="w-full"
+              onClick={() => router.push('/cart')}
               rightIcon={<ArrowRight className="w-4 h-4" />}
             >
-              Weka Kwenye Kikapu (Cart)
+              Endelea Kwenye Kikapu
             </Button>
           </div>
         </div>

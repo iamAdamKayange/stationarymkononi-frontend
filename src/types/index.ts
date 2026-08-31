@@ -142,7 +142,7 @@ export interface DocumentFile extends DocumentUploadResponse {
     id: string;
     fullName: string;
     username: string;
-    phoneNumber?: string | null;
+    phoneNumber: string;
   };
 }
 
