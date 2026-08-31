@@ -180,7 +180,7 @@ export default function StationeryDashboardPage() {
   if (!isAuthenticated || user?.role !== 'STATIONERY') {
     return (
       <div className="max-w-md mx-auto my-12 text-center">
-        <h3 className="font-bold text-slate-800">Ukurasa huu ni wa Stationery Shop Pekee</h3>
+        <h3 className="font-bold text-slate-800 dark:text-slate-100">Ukurasa huu ni wa Stationery Shop Pekee</h3>
         <Link href="/auth/login" className="text-xs text-brand-600 underline mt-2 block">
           Ingia kama Stationery
         </Link>
@@ -251,32 +251,32 @@ export default function StationeryDashboardPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <div className="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
           <span className="text-[11px] font-bold uppercase text-amber-600">Oda Mpya (Pending)</span>
-          <div className="text-2xl font-extrabold text-slate-900 mt-1">{pendingOrders.length}</div>
+          <div className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 mt-1">{pendingOrders.length}</div>
         </div>
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <div className="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
           <span className="text-[11px] font-bold uppercase text-blue-600">Zinazochapwa (Printing)</span>
-          <div className="text-2xl font-extrabold text-slate-900 mt-1">{printingOrders.length}</div>
+          <div className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 mt-1">{printingOrders.length}</div>
         </div>
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <div className="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
           <span className="text-[11px] font-bold uppercase text-emerald-600">Tayari kwa Rider</span>
-          <div className="text-2xl font-extrabold text-slate-900 mt-1">{readyOrders.length}</div>
+          <div className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 mt-1">{readyOrders.length}</div>
         </div>
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <div className="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
           <span className="text-[11px] font-bold uppercase text-brand-600">Mapato ya Dukani</span>
-          <div className="text-xl font-extrabold text-brand-700 mt-1">
+          <div className="text-xl font-extrabold text-brand-700 dark:text-brand-400 mt-1">
             TZS {totalRevenue.toLocaleString()}
           </div>
         </div>
       </div>
 
       {/* Recent Documents */}
-      <section className="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-4">
+      <section className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs p-5 sm:p-6 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
           <div>
-            <h2 className="text-lg font-extrabold text-slate-900">Documents za Wateja</h2>
-            <p className="text-xs text-slate-500">
+            <h2 className="text-lg font-extrabold text-slate-900 dark:text-slate-100">Documents za Wateja</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Hapa unaweza kuona uploads mpya, kufungua file, au kupakua kwa ajili ya print.
             </p>
           </div>
@@ -302,13 +302,13 @@ export default function StationeryDashboardPage() {
       </section>
 
       {/* Queue Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
         <button
           onClick={() => setActiveTab('PENDING')}
           className={`pb-3 px-4 text-xs font-bold border-b-2 whitespace-nowrap transition-all ${
             activeTab === 'PENDING'
-              ? 'border-brand-600 text-brand-700'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-brand-600 text-brand-700 dark:text-brand-400'
+              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           Oda Mpya ({pendingOrders.length})
@@ -317,8 +317,8 @@ export default function StationeryDashboardPage() {
           onClick={() => setActiveTab('PRINTING')}
           className={`pb-3 px-4 text-xs font-bold border-b-2 whitespace-nowrap transition-all ${
             activeTab === 'PRINTING'
-              ? 'border-brand-600 text-brand-700'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-brand-600 text-brand-700 dark:text-brand-400'
+              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           Inachapwa ({printingOrders.length})
@@ -327,8 +327,8 @@ export default function StationeryDashboardPage() {
           onClick={() => setActiveTab('READY')}
           className={`pb-3 px-4 text-xs font-bold border-b-2 whitespace-nowrap transition-all ${
             activeTab === 'READY'
-              ? 'border-brand-600 text-brand-700'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-brand-600 text-brand-700 dark:text-brand-400'
+              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           Tayari Kukabidhiwa ({readyOrders.length})
@@ -337,8 +337,8 @@ export default function StationeryDashboardPage() {
           onClick={() => setActiveTab('ALL')}
           className={`pb-3 px-4 text-xs font-bold border-b-2 whitespace-nowrap transition-all ${
             activeTab === 'ALL'
-              ? 'border-brand-600 text-brand-700'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-brand-600 text-brand-700 dark:text-brand-400'
+              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           Oda Zote ({orders.length})
@@ -347,8 +347,8 @@ export default function StationeryDashboardPage() {
           onClick={() => setActiveTab('DOCUMENTS')}
           className={`pb-3 px-4 text-xs font-bold border-b-2 whitespace-nowrap transition-all ${
             activeTab === 'DOCUMENTS'
-              ? 'border-brand-600 text-brand-700'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-brand-600 text-brand-700 dark:text-brand-400'
+              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           Nyaraka (Documents)
@@ -359,37 +359,37 @@ export default function StationeryDashboardPage() {
       {loading ? (
         <LoadingSpinner />
       ) : getFilteredOrders().length === 0 ? (
-        <div className="p-8 text-center bg-white rounded-3xl border border-slate-200">
-          <p className="text-xs text-slate-400">Hakuna oda katika sehemu hii kwa sasa.</p>
+        <div className="p-8 text-center bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700">
+          <p className="text-xs text-slate-400 dark:text-slate-500">Hakuna oda katika sehemu hii kwa sasa.</p>
         </div>
       ) : (
         <div className="space-y-4">
           {getFilteredOrders().map((order) => (
             <div
               key={order.id}
-              className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs space-y-4"
+              className="bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-4"
             >
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-700 pb-3">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-extrabold text-slate-900 text-base">
+                    <span className="font-extrabold text-slate-900 dark:text-slate-100 text-base">
                       Oda #{order.orderNumber}
                     </span>
                     <Badge variant="brand" size="sm">
                       {order.status}
                     </Badge>
                   </div>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Mteja: <strong className="text-slate-700">{order.customer?.fullName}</strong> (
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Mteja: <strong className="text-slate-700 dark:text-slate-300">{order.customer?.fullName}</strong> (
                     {order.customer?.phoneNumber || order.deliveryPhone})
                   </p>
                 </div>
 
                 <div className="text-left sm:text-right">
-                  <span className="text-xs font-bold text-brand-700 block">
+                  <span className="text-xs font-bold text-brand-700 dark:text-brand-400 block">
                     Thamani ya Oda: TZS {order.totalAmount.toLocaleString()}
                   </span>
-                  <span className="text-[10px] text-slate-400">
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500">
                     Gharama ya Printing: TZS {order.printingCost.toLocaleString()}
                   </span>
                 </div>
@@ -397,18 +397,18 @@ export default function StationeryDashboardPage() {
 
               {/* Order Items & Options */}
               <div className="space-y-2 text-xs">
-                <div className="font-bold text-slate-700">Nyaraka na Vifaa Vilivyoagizwa:</div>
+                <div className="font-bold text-slate-700 dark:text-slate-300">Nyaraka na Vifaa Vilivyoagizwa:</div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {order.orderItems?.map((item) => (
                     <div
                       key={item.id}
-                      className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex items-start justify-between"
+                      className="p-3 bg-slate-50 dark:bg-slate-700 rounded-xl border border-slate-200/80 dark:border-slate-600 flex items-start justify-between"
                     >
                       <div>
-                        <div className="font-bold text-slate-900">{item.title}</div>
-                        <div className="text-slate-500 text-[11px]">Idadi: {item.quantity}</div>
+                        <div className="font-bold text-slate-900 dark:text-slate-100">{item.title}</div>
+                        <div className="text-slate-500 dark:text-slate-400 text-[11px]">Idadi: {item.quantity}</div>
                       </div>
-                      <span className="font-bold text-slate-700">
+                      <span className="font-bold text-slate-700 dark:text-slate-300">
                         TZS {item.totalPrice.toLocaleString()}
                       </span>
                     </div>
@@ -417,9 +417,9 @@ export default function StationeryDashboardPage() {
               </div>
 
               {/* Action Buttons depending on status */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
-                <div className="text-xs text-slate-500">
-                  Kufikisha: <strong>{order.deliveryAddress}</strong>
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-700">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
+                  Kufikisha: <strong className="text-slate-700 dark:text-slate-300">{order.deliveryAddress}</strong>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -503,23 +503,23 @@ export default function StationeryDashboardPage() {
       >
         <form onSubmit={handleCreateProduct} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Jina la Bidhaa</label>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Jina la Bidhaa</label>
             <input
               type="text"
               value={newProductName}
               onChange={(e) => setNewProductName(e.target.value)}
               placeholder="mfano: Kalamu ya BIC Blue, Counter Book 3 Quire"
-              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
+              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-slate-100"
               required
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Kategoria ya Bidhaa</label>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Kategoria ya Bidhaa</label>
             <select
               value={newProductCatId}
               onChange={(e) => setNewProductCatId(e.target.value)}
-              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm"
+              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100"
               required
             >
               {categories.map((c) => (
@@ -531,32 +531,32 @@ export default function StationeryDashboardPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Maelezo ya Ziada (Hiari)</label>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Maelezo ya Ziada (Hiari)</label>
             <input
               type="text"
               value={newProductDesc}
               onChange={(e) => setNewProductDesc(e.target.value)}
               placeholder="mfano: Pakiti ya kalamu 50, au daftari lenye kurasa 288"
-              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs bg-white"
+              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Bei ya Bidhaa (TZS)</label>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Bei ya Bidhaa (TZS)</label>
             <input
               type="number"
               value={newProductPrice}
               onChange={(e) => setNewProductPrice(e.target.value)}
               placeholder="500"
-              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
+              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-slate-100"
               required
             />
           </div>
 
           {/* Mandatory Minimum 3 Product Images Section */}
-          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+          <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+              <label className="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
                 <ShoppingBag className="w-3.5 h-3.5 text-brand-600" />
                 Picha za Bidhaa (Angalau Picha 3 Zinahitajika) *
               </label>
@@ -571,7 +571,7 @@ export default function StationeryDashboardPage() {
                 {newProductImages.map((imgUrl, idx) => (
                   <div
                     key={idx}
-                    className="relative w-full h-20 rounded-xl overflow-hidden border-2 border-brand-500/60 shadow-xs group bg-white"
+                    className="relative w-full h-20 rounded-xl overflow-hidden border-2 border-brand-500/60 shadow-xs group bg-white dark:bg-slate-700"
                   >
                     <img src={imgUrl} alt={`Product ${idx + 1}`} className="w-full h-full object-cover" />
                     <span className="absolute top-1 left-1 bg-black/60 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
@@ -598,7 +598,7 @@ export default function StationeryDashboardPage() {
                   value={imageUrlInput}
                   onChange={(e) => setImageUrlInput(e.target.value)}
                   placeholder="Bandika Linki ya Picha (Image URL) au tumia kitufe cha kupakia..."
-                  className="flex-1 p-2 text-xs bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500"
+                  className="flex-1 p-2 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-slate-100"
                 />
                 <Button
                   type="button"
@@ -612,7 +612,7 @@ export default function StationeryDashboardPage() {
               </div>
 
               <div className="flex items-center justify-between pt-1">
-                <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 shadow-xs transition-colors">
+                <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 shadow-xs transition-colors">
                   <Plus className="w-3.5 h-3.5 text-brand-600" />
                   {uploadingImage ? 'Inapakia...' : 'Pakia Picha Kutoka Kwenye Kifaa'}
                   <input
@@ -632,8 +632,8 @@ export default function StationeryDashboardPage() {
               </div>
 
               {/* Preset Sample Images for quick testing */}
-              <div className="pt-2 border-t border-slate-200">
-                <span className="text-[10px] text-slate-400 font-bold uppercase block mb-1.5">
+              <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+                <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase block mb-1.5">
                   Mifano ya Picha za Haraka (Bofya kuongeza):
                 </span>
                 <div className="flex flex-wrap gap-1.5">
@@ -648,7 +648,7 @@ export default function StationeryDashboardPage() {
                       key={i}
                       type="button"
                       onClick={() => handleAddImage(preset.url)}
-                      className="px-2 py-1 bg-white hover:bg-brand-50 border border-slate-200 hover:border-brand-300 rounded-lg text-[10px] font-medium text-slate-700 transition-colors"
+                      className="px-2 py-1 bg-white dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-brand-950/20 border border-slate-200 dark:border-slate-700 hover:border-brand-300 rounded-lg text-[10px] font-medium text-slate-700 dark:text-slate-300 transition-colors"
                     >
                       + {preset.name}
                     </button>
@@ -658,7 +658,7 @@ export default function StationeryDashboardPage() {
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-700">
             <Button type="button" variant="outline" size="md" onClick={() => setProductModalOpen(false)}>
               Ghairi
             </Button>
