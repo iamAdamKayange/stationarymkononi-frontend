@@ -47,13 +47,13 @@ export default function StationeriesListPage() {
 
       {/* Search Input */}
       <div className="relative">
-        <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+        <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3.5" />
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Tafuta kwa jina la stationery, eneo au mtaa... (mfano: Mwenge, Posta, Kariakoo)"
-          className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm focus:ring-2 focus:ring-brand-500 shadow-xs"
+          className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm focus:ring-2 focus:ring-brand-500 shadow-xs text-slate-900 dark:text-slate-100"
         />
       </div>
 
@@ -73,16 +73,16 @@ export default function StationeriesListPage() {
             <Link
               key={shop.id}
               href={`/stationeries/${shop.id}`}
-              className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-brand-300 transition-all flex flex-col justify-between group"
+              className="bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-700 shadow-xs hover:shadow-md hover:border-brand-300 transition-all flex flex-col justify-between group"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold shadow-xs">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold shadow-xs">
                       <Compass className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-base group-hover:text-brand-600 transition-colors">
+                      <h3 className="font-bold text-slate-900 dark:text-slate-100 text-base group-hover:text-brand-600 transition-colors">
                         {shop.name}
                       </h3>
                       <div className="flex items-center gap-1.5 text-xs text-amber-600 font-semibold mt-0.5">
@@ -98,26 +98,26 @@ export default function StationeriesListPage() {
                 </div>
 
                 {shop.description && (
-                  <p className="text-xs text-slate-600 line-clamp-2 mb-3">{shop.description}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 mb-3">{shop.description}</p>
                 )}
 
-                <div className="space-y-1 text-xs text-slate-500">
+                <div className="space-y-1 text-xs text-slate-500 dark:text-slate-400">
                   <div className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                    <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                     <span>{shop.address}, {shop.city}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                    <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                     <span>{shop.openingHours || '08:00 AM - 08:00 PM'}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs font-semibold text-brand-600 flex items-center gap-1">
+              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                <span className="text-xs font-semibold text-brand-600 dark:text-brand-400 flex items-center gap-1">
                   <Printer className="w-3.5 h-3.5" /> Printing & Stationery Services
                 </span>
-                <span className="text-xs font-bold text-slate-700 flex items-center gap-1 group-hover:text-brand-600">
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1 group-hover:text-brand-600">
                   Fungua Duka <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>
