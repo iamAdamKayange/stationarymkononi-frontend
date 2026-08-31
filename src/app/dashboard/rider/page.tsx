@@ -196,10 +196,11 @@ export default function RiderDashboardPage() {
               ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/30'
               : 'bg-slate-700 hover:bg-slate-600 text-slate-200'
           }`}
-        >
-          <Power className="w-4 h-4" />
-          {isOnline ? 'Washa OFFLINE' : 'Washa ONLINE (GO ONLINE)'}
-        </button>
+          >
+            <Power className="w-4 h-4" />
+            {isOnline ? 'Washa OFFLINE' : 'Washa ONLINE (GO ONLINE)'}
+          </button>
+        </div>
       </div>
 
       {/* Rider KPI Metrics */}

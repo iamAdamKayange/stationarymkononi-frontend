@@ -19,6 +19,8 @@ import {
   ToggleLeft,
   ToggleRight,
   UploadCloud,
+  Mail,
+  Star,
 } from 'lucide-react';
 import { Button } from '../../../../components/ui/Button';
 import { Badge } from '../../../../components/ui/Badge';
@@ -167,9 +169,9 @@ export default function RiderProfilePage() {
   const getVerificationBadge = () => {
     switch (verificationStatus) {
       case 'VERIFIED':
-        return <Badge variant="success" size="sm" leftIcon={<ShieldCheck className="w-3 h-3" />}>Verified</Badge>;
+        return <Badge variant="success" size="sm">Verified</Badge>;
       case 'PENDING_VERIFICATION':
-        return <Badge variant="warning" size="sm" leftIcon={<Clock className="w-3 h-3" />}>Pending</Badge>;
+        return <Badge variant="warning" size="sm">Pending</Badge>;
       case 'SUSPENDED':
         return <Badge variant="neutral" size="sm">Suspended</Badge>;
       case 'REJECTED':
