@@ -77,8 +77,8 @@ export const RatingModal: React.FC<RatingModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} title="Toa Maoni & Alama (Rating)">
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Stationery Section */}
-        <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/80">
-          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+        <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200/80 dark:border-slate-700">
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Stationery: {stationeryName}
           </label>
           {renderStars(stationeryScore, setStationeryScore)}
@@ -87,13 +87,13 @@ export const RatingModal: React.FC<RatingModalProps> = ({
             value={stationeryComment}
             onChange={(e) => setStationeryComment(e.target.value)}
             placeholder="Je, ubora wa printing na huduma ulikuwaje?"
-            className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+            className="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
           />
         </div>
 
         {/* Rider Section */}
-        <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/80">
-          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+        <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200/80 dark:border-slate-700">
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Rider: {riderName}
           </label>
           {renderStars(riderScore, setRiderScore)}
@@ -102,7 +102,7 @@ export const RatingModal: React.FC<RatingModalProps> = ({
             value={riderComment}
             onChange={(e) => setRiderComment(e.target.value)}
             placeholder="Je, rider alifikisha mzigo kwa wakati na adabu?"
-            className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+            className="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
           />
         </div>
 

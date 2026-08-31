@@ -209,8 +209,8 @@ export default function CheckoutPage() {
         {/* Left Form: Delivery Address + Payment Provider */}
         <div className="lg:col-span-2 space-y-6">
           {/* Section 1: Delivery Location */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-            <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-4">
+            <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <MapPin className="w-4 h-4 text-brand-600" />
               1. Eneo la Kufikishiwa (Delivery Location)
             </h3>
@@ -226,7 +226,7 @@ export default function CheckoutPage() {
             />
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Anuani Kamili ya Kufikisha
               </label>
               <input
@@ -238,31 +238,31 @@ export default function CheckoutPage() {
                     ? 'Chagua au hariri anuani iliyohifadhiwa'
                     : 'Weka anuani ya delivery'
                 }
-                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
+                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-slate-100"
                 required
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   Namba ya Simu ya Kupokelea Mzigo
                 </label>
                 <div className="relative">
-                  <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                  <Phone className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
                   <input
                     type="tel"
                     value={deliveryPhone}
                     onChange={(e) => setDeliveryPhone(e.target.value)}
                     placeholder="Namba ya simu ya kupokea mzigo"
-                    className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
+                    className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-slate-100"
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   Maelekezo kwa Rider (Instructions)
                 </label>
                 <input
@@ -270,15 +270,15 @@ export default function CheckoutPage() {
                   value={deliveryInstructions}
                   onChange={(e) => setDeliveryInstructions(e.target.value)}
                   placeholder="Maelekezo yoyote ya ziada kwa rider"
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 bg-white"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-slate-100"
                 />
               </div>
             </div>
           </div>
 
           {/* Section 2: Payment Provider */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-            <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-4">
+            <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <CreditCard className="w-4 h-4 text-brand-600" />
               2. Njia ya Malipo (Tanzania Payment Gateways)
             </h3>
@@ -289,12 +289,12 @@ export default function CheckoutPage() {
                 onClick={() => setPaymentMethod('M_PESA')}
                 className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between ${
                   paymentMethod === 'M_PESA'
-                    ? 'border-red-500 bg-red-50/40 ring-2 ring-red-500'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'border-red-500 bg-red-50/40 dark:bg-red-900/20 ring-2 ring-red-500'
+                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                 }`}
               >
                 <div className="font-bold text-red-600 text-sm">M-Pesa</div>
-                <span className="text-[10px] text-slate-500 mt-2">Vodacom USSD Push</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-2">Vodacom USSD Push</span>
               </button>
 
               <button
@@ -302,12 +302,12 @@ export default function CheckoutPage() {
                 onClick={() => setPaymentMethod('TIGO_PESA')}
                 className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between ${
                   paymentMethod === 'TIGO_PESA'
-                    ? 'border-blue-500 bg-blue-50/40 ring-2 ring-blue-500'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'border-blue-500 bg-blue-50/40 dark:bg-blue-900/20 ring-2 ring-blue-500'
+                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                 }`}
               >
                 <div className="font-bold text-blue-600 text-sm">Tigo Pesa</div>
-                <span className="text-[10px] text-slate-500 mt-2">Tigo / Mixx</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-2">Tigo / Mixx</span>
               </button>
 
               <button
@@ -315,12 +315,12 @@ export default function CheckoutPage() {
                 onClick={() => setPaymentMethod('AIRTEL_MONEY')}
                 className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between ${
                   paymentMethod === 'AIRTEL_MONEY'
-                    ? 'border-rose-500 bg-rose-50/40 ring-2 ring-rose-500'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'border-rose-500 bg-rose-50/40 dark:bg-rose-900/20 ring-2 ring-rose-500'
+                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                 }`}
               >
                 <div className="font-bold text-rose-600 text-sm">Airtel Money</div>
-                <span className="text-[10px] text-slate-500 mt-2">Airtel Tanzania</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-2">Airtel Tanzania</span>
               </button>
 
               <button
@@ -328,27 +328,27 @@ export default function CheckoutPage() {
                 onClick={() => setPaymentMethod('CARD')}
                 className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between ${
                   paymentMethod === 'CARD'
-                    ? 'border-brand-500 bg-brand-50/40 ring-2 ring-brand-500'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'border-brand-500 bg-brand-50/40 dark:bg-brand-900/20 ring-2 ring-brand-500'
+                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                 }`}
               >
-                <div className="font-bold text-brand-700 text-sm">Kadi (Visa/Mastercard)</div>
-                <span className="text-[10px] text-slate-500 mt-2">Online Banking</span>
+                <div className="font-bold text-brand-700 dark:text-brand-400 text-sm">Kadi (Visa/Mastercard)</div>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-2">Online Banking</span>
               </button>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Namba ya Simu ya Kufanyia Malipo ({paymentMethod})
               </label>
               <div className="relative">
-                <Smartphone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                <Smartphone className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
                 <input
                   type="tel"
                   value={paymentPhone}
                   onChange={(e) => setPaymentPhone(e.target.value)}
                   placeholder="Namba ya simu ya malipo"
-                  className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 bg-white"
+                  className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-slate-100"
                   required
                 />
               </div>
@@ -358,27 +358,27 @@ export default function CheckoutPage() {
 
         {/* Right Summary Card */}
         <div>
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-md space-y-4 sticky top-24">
-            <h3 className="font-bold text-sm text-slate-900 border-b border-slate-100 pb-3">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-700 shadow-md space-y-4 sticky top-24">
+            <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 border-b border-slate-100 dark:border-slate-700 pb-3">
               Mchanganuo Kamili (Total Amount)
             </h3>
 
-            <div className="space-y-2 text-xs text-slate-600">
+            <div className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
               <div className="flex items-center justify-between">
                 <span>Gharama ya Printing:</span>
-                <span className="font-semibold text-slate-900">
+                <span className="font-semibold text-slate-900 dark:text-slate-100">
                   TZS {getPrintingCost().toLocaleString()}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Vifaa vya Dukani:</span>
-                <span className="font-semibold text-slate-900">
+                <span className="font-semibold text-slate-900 dark:text-slate-100">
                   TZS {getProductCost().toLocaleString()}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Gharama ya Delivery:</span>
-                <span className="font-semibold text-slate-900">
+                <span className="font-semibold text-slate-900 dark:text-slate-100">
                   TZS {deliveryFee.toLocaleString()}
                 </span>
               </div>

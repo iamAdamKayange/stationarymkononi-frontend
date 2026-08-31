@@ -53,8 +53,8 @@ export default function CustomerDashboardPage() {
   if (!isAuthenticated || !user) {
     return (
       <div className="max-w-md mx-auto my-12 text-center">
-        <h3 className="font-bold text-slate-800">Tafadhali ingia kwenye akaunti</h3>
-        <Link href="/auth/login" className="text-xs text-brand-600 underline mt-2 block">
+        <h3 className="font-bold text-slate-800 dark:text-slate-200">Tafadhali ingia kwenye akaunti</h3>
+        <Link href="/auth/login" className="text-xs text-brand-600 dark:text-brand-400 underline mt-2 block">
           Ingia Hapa
         </Link>
       </div>
@@ -109,31 +109,31 @@ export default function CustomerDashboardPage() {
 
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
-          <span className="text-xs font-bold uppercase text-slate-400">Oda Zinazoendelea</span>
-          <div className="text-2xl font-extrabold text-brand-600 mt-1">{activeOrders.length}</div>
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
+          <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500">Oda Zinazoendelea</span>
+          <div className="text-2xl font-extrabold text-brand-600 dark:text-brand-500 mt-1">{activeOrders.length}</div>
         </div>
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
-          <span className="text-xs font-bold uppercase text-slate-400">Oda Zilizokamilika</span>
-          <div className="text-2xl font-extrabold text-slate-900 mt-1">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
+          <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500">Oda Zilizokamilika</span>
+          <div className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 mt-1">
             {orders.filter((o) => o.status === 'DELIVERED').length}
           </div>
         </div>
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
-          <span className="text-xs font-bold uppercase text-slate-400">Jumla Uliyotumia</span>
-          <div className="text-2xl font-extrabold text-slate-900 mt-1">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
+          <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500">Jumla Uliyotumia</span>
+          <div className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 mt-1">
             TZS {totalSpent.toLocaleString()}
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+            <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Bell className="w-4 h-4 text-brand-600" /> Notification Preferences
             </h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Chagua kama alerts ziwe na sauti, vibration, au zimwe kabisa.
             </p>
           </div>
@@ -146,20 +146,20 @@ export default function CustomerDashboardPage() {
           <button
             type="button"
             onClick={() => setNotificationsEnabled(!notificationsEnabled)}
-            className="w-full flex items-center justify-between gap-4 rounded-2xl border border-slate-200 px-4 py-3 text-left hover:border-brand-300 hover:bg-brand-50/40 transition-colors"
+            className="w-full flex items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3 text-left hover:border-brand-300 dark:hover:border-brand-600 hover:bg-brand-50/40 dark:hover:bg-brand-950/40 transition-colors"
           >
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
+              <span className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400 flex items-center justify-center">
                 <Bell className="w-5 h-5" />
               </span>
               <div>
-                <div className="font-semibold text-sm text-slate-900">Notifications</div>
-                <div className="text-xs text-slate-500">Pokea alerts za order, payment na delivery.</div>
+                <div className="font-semibold text-sm text-slate-900 dark:text-slate-100">Notifications</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">Pokea alerts za order, payment na delivery.</div>
               </div>
             </div>
             <span
               className={`text-xs font-bold px-3 py-1 rounded-full ${
-                notificationsEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'
+                notificationsEnabled ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
               }`}
             >
               {notificationsEnabled ? 'Enabled' : 'Disabled'}
@@ -170,20 +170,20 @@ export default function CustomerDashboardPage() {
             type="button"
             onClick={() => setNotificationSoundEnabled(!notificationSoundEnabled)}
             disabled={!notificationsEnabled}
-            className="w-full flex items-center justify-between gap-4 rounded-2xl border border-slate-200 px-4 py-3 text-left hover:border-brand-300 hover:bg-brand-50/40 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3 text-left hover:border-brand-300 dark:hover:border-brand-600 hover:bg-brand-50/40 dark:hover:bg-brand-950/40 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
+              <span className="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 flex items-center justify-center">
                 <Volume2 className="w-5 h-5" />
               </span>
               <div>
-                <div className="font-semibold text-sm text-slate-900">Sound</div>
-                <div className="text-xs text-slate-500">Chime nyepesi pale app iko wazi.</div>
+                <div className="font-semibold text-sm text-slate-900 dark:text-slate-100">Sound</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">Chime nyepesi pale app iko wazi.</div>
               </div>
             </div>
             <span
               className={`text-xs font-bold px-3 py-1 rounded-full ${
-                notificationSoundEnabled ? 'bg-sky-100 text-sky-700' : 'bg-slate-100 text-slate-500'
+                notificationSoundEnabled ? 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
               }`}
             >
               {notificationSoundEnabled ? 'On' : 'Off'}
@@ -194,20 +194,20 @@ export default function CustomerDashboardPage() {
             type="button"
             onClick={() => setNotificationVibrateEnabled(!notificationVibrateEnabled)}
             disabled={!notificationsEnabled}
-            className="w-full flex items-center justify-between gap-4 rounded-2xl border border-slate-200 px-4 py-3 text-left hover:border-brand-300 hover:bg-brand-50/40 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3 text-left hover:border-brand-300 dark:hover:border-brand-600 hover:bg-brand-50/40 dark:hover:bg-brand-950/40 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <span className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                 <Vibrate className="w-5 h-5" />
               </span>
               <div>
-                <div className="font-semibold text-sm text-slate-900">Vibrate</div>
-                <div className="text-xs text-slate-500">Mtetemo mfupi kwa alerts muhimu.</div>
+                <div className="font-semibold text-sm text-slate-900 dark:text-slate-100">Vibrate</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">Mtetemo mfupi kwa alerts muhimu.</div>
               </div>
             </div>
             <span
               className={`text-xs font-bold px-3 py-1 rounded-full ${
-                notificationVibrateEnabled ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500'
+                notificationVibrateEnabled ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
               }`}
             >
               {notificationVibrateEnabled ? 'On' : 'Off'}
@@ -219,19 +219,19 @@ export default function CustomerDashboardPage() {
       {/* Active Orders Section */}
       {activeOrders.length > 0 && (
         <div className="space-y-3">
-          <h3 className="font-bold text-base text-slate-900">Oda Zinazoendelea (Active Orders)</h3>
+          <h3 className="font-bold text-base text-slate-900 dark:text-slate-100">Oda Zinazoendelea (Active Orders)</h3>
           <div className="space-y-3">
             {activeOrders.map((order) => (
               <div
                 key={order.id}
-                className="bg-white rounded-2xl p-5 border border-brand-200 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-brand-200 dark:border-brand-800 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900 text-sm">Oda #{order.orderNumber}</span>
+                    <span className="font-bold text-slate-900 dark:text-slate-100 text-sm">Oda #{order.orderNumber}</span>
                     <Badge variant="brand" size="sm">{order.status}</Badge>
                   </div>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                     Stationery: {order.stationery?.name} • TZS {order.totalAmount.toLocaleString()}
                   </p>
                 </div>
@@ -247,10 +247,10 @@ export default function CustomerDashboardPage() {
       )}
 
       {/* Recent Orders Table */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 className="font-bold text-sm text-slate-900">Historia ya Oda (Recent Orders)</h3>
-          <Link href="/orders" className="text-xs font-bold text-brand-600 hover:underline">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+          <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100">Historia ya Oda (Recent Orders)</h3>
+          <Link href="/orders" className="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
             Ona Zote
           </Link>
         </div>
@@ -258,14 +258,14 @@ export default function CustomerDashboardPage() {
         {loading ? (
           <LoadingSpinner />
         ) : orders.length === 0 ? (
-          <p className="text-xs text-slate-400 py-4 text-center">Bado huna oda zozote.</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 py-4 text-center">Bado huna oda zozote.</p>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-slate-100 dark:divide-slate-800">
             {orders.slice(0, 5).map((order) => (
               <div key={order.id} className="py-3 flex items-center justify-between text-xs">
                 <div>
-                  <span className="font-bold text-slate-900">#{order.orderNumber}</span>
-                  <div className="text-slate-400 text-[11px]">
+                  <span className="font-bold text-slate-900 dark:text-slate-100">#{order.orderNumber}</span>
+                  <div className="text-slate-400 dark:text-slate-500 text-[11px]">
                     {new Date(order.createdAt).toLocaleDateString()} • {order.stationery?.name}
                   </div>
                 </div>
@@ -273,10 +273,10 @@ export default function CustomerDashboardPage() {
                   <Badge variant={order.status === 'DELIVERED' ? 'success' : 'neutral'} size="sm">
                     {order.status}
                   </Badge>
-                  <span className="font-extrabold text-slate-800">
+                  <span className="font-extrabold text-slate-800 dark:text-slate-200">
                     TZS {order.totalAmount.toLocaleString()}
                   </span>
-                  <Link href={`/orders/${order.id}`} className="text-brand-600 font-bold hover:underline">
+                  <Link href={`/orders/${order.id}`} className="text-brand-600 dark:text-brand-400 font-bold hover:underline">
                     Angalia
                   </Link>
                 </div>

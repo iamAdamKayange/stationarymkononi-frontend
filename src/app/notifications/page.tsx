@@ -97,10 +97,10 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">
             Taarifa Zangu (Notifications)
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Sasisho za moja kwa moja kuhusu uchapaji, maendeleo na delivery.
           </p>
         </div>
@@ -121,7 +121,7 @@ export default function NotificationsPage() {
         <LoadingSpinner message="Inapakia taarifa zako..." />
       ) : notifications.length === 0 ? (
         <EmptyState
-          icon={<Bell className="w-8 h-8 text-slate-400" />}
+          icon={<Bell className="w-8 h-8 text-slate-400 dark:text-slate-500" />}
           title="Huna Taarifa Mpya"
           description="Taarifa kuhusu oda zako na mienendo ya rider zitaonekana hapa."
         />
@@ -132,18 +132,18 @@ export default function NotificationsPage() {
               key={notif.id}
               className={`p-4 rounded-2xl border transition-all flex items-start gap-3.5 ${
                 notif.isRead
-                  ? 'bg-white border-slate-200/80 shadow-xs'
-                  : 'bg-brand-50/40 border-brand-200 shadow-sm'
+                  ? 'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 shadow-xs'
+                  : 'bg-brand-50/40 dark:bg-brand-950/40 border-brand-200 dark:border-brand-800 shadow-sm'
               }`}
             >
-              <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
                 {getIconForNotification(notif.title)}
               </div>
 
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-sm text-slate-900">{notif.title}</h4>
-                  <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                  <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">{notif.title}</h4>
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 flex items-center gap-1">
                     <Clock className="w-3 h-3" />
                     {new Date(notif.createdAt).toLocaleTimeString('sw-TZ', {
                       hour: '2-digit',
@@ -151,13 +151,13 @@ export default function NotificationsPage() {
                     })}
                   </span>
                 </div>
-                <p className="text-xs text-slate-600 leading-relaxed">{notif.body}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{notif.body}</p>
 
                 {notif.relatedOrderId && (
                   <div className="pt-2">
                     <Link
                       href={`/orders/${notif.relatedOrderId}`}
-                      className="text-xs font-bold text-brand-600 hover:underline"
+                      className="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline"
                     >
                       Angalia Oda Hii →
                     </Link>

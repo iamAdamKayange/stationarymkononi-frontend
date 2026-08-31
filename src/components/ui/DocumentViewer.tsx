@@ -146,7 +146,7 @@ export function DocumentViewer({ document: documentData, onClose, showActions = 
   const isImage = documentData.fileType.startsWith('image/');
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xl overflow-hidden">
+    <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xl overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-brand-800 to-brand-600 p-6 text-white">
         <div className="flex items-start justify-between gap-4">
@@ -187,28 +187,28 @@ export function DocumentViewer({ document: documentData, onClose, showActions = 
       </div>
 
       {/* Document Info */}
-      <div className="p-6 border-b border-slate-100 bg-slate-50/50">
+      <div className="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center">
-              <User className="w-5 h-5 text-slate-600" />
+            <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center">
+              <User className="w-5 h-5 text-slate-600 dark:text-slate-400" />
             </div>
             <div>
-              <p className="text-xs text-slate-500">Aliyepakia</p>
-              <p className="text-sm font-semibold text-slate-900">{documentData.uploadedBy.fullName}</p>
-              <p className="text-xs text-slate-600">{documentData.uploadedBy.phoneNumber}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Aliyepakia</p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{documentData.uploadedBy.fullName}</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400">{documentData.uploadedBy.phoneNumber}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center">
-              <FileText className="w-5 h-5 text-slate-600" />
+            <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center">
+              <FileText className="w-5 h-5 text-slate-600 dark:text-slate-400" />
             </div>
             <div>
-              <p className="text-xs text-slate-500">Aina ya Faili</p>
-              <p className="text-sm font-semibold text-slate-900">
+              <p className="text-xs text-slate-500 dark:text-slate-400">Aina ya Faili</p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                 {isPdf ? 'PDF Document' : isImage ? 'Image' : 'Document'}
               </p>
-              <p className="text-xs text-slate-600">{documentData.fileType}</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400">{documentData.fileType}</p>
             </div>
           </div>
         </div>
@@ -219,7 +219,7 @@ export function DocumentViewer({ document: documentData, onClose, showActions = 
         {canPreview ? (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h4 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+              <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 <Eye className="w-4 h-4 text-brand-600" />
                 Mtazamo wa Nyaraka (Preview)
               </h4>
@@ -229,9 +229,9 @@ export function DocumentViewer({ document: documentData, onClose, showActions = 
             </div>
 
             {previewError ? (
-              <div className="p-8 bg-red-50 border border-red-200 rounded-2xl text-center">
-                <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-3" />
-                <p className="text-sm text-red-700">Imeshindikana kupakia mtazamo wa nyaraka</p>
+              <div className="p-8 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-2xl text-center">
+                <AlertCircle className="w-12 h-12 text-red-600 dark:text-red-400 mx-auto mb-3" />
+                <p className="text-sm text-red-700 dark:text-red-400">Imeshindikana kupakia mtazamo wa nyaraka</p>
                 <Button
                   variant="outline"
                   size="sm"
@@ -242,7 +242,7 @@ export function DocumentViewer({ document: documentData, onClose, showActions = 
                 </Button>
               </div>
             ) : (
-              <div className="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200">
+              <div className="bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700">
                 {isPdf ? (
                   <iframe
                     src={previewUrl}
@@ -262,9 +262,9 @@ export function DocumentViewer({ document: documentData, onClose, showActions = 
             )}
           </div>
         ) : (
-          <div className="p-8 bg-slate-50 border border-slate-200 rounded-2xl text-center">
-            <FileText className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-            <p className="text-sm text-slate-600">
+          <div className="p-8 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-center">
+            <FileText className="w-12 h-12 text-slate-400 dark:text-slate-500 mx-auto mb-3" />
+            <p className="text-sm text-slate-600 dark:text-slate-400">
               Mtazamo haupatikani kwa aina hii ya faili. Tafadhali shusha faili kuona maudhui.
             </p>
           </div>
@@ -273,7 +273,7 @@ export function DocumentViewer({ document: documentData, onClose, showActions = 
 
       {/* Actions */}
       {showActions && (
-        <div className="p-6 border-t border-slate-100 bg-slate-50/50">
+        <div className="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
               variant="primary"

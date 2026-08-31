@@ -155,7 +155,7 @@ export const PaymentDemoModal: React.FC<PaymentDemoModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-fadeIn">
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 animate-scaleUp">
+      <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 animate-scaleUp">
         {/* Header Bar */}
         <div className={`px-6 py-4 text-white flex items-center justify-between ${provider.colorBg}`}>
           <div className="flex items-center gap-2.5">
@@ -178,14 +178,14 @@ export const PaymentDemoModal: React.FC<PaymentDemoModalProps> = ({
           {step === 'USSD_PROMPT' && (
             <div className="space-y-4">
               {/* Order Info Badge */}
-              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 flex items-center justify-between">
+              <div className="p-3.5 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] text-slate-400 font-bold uppercase block">Oda:</span>
-                  <span className="font-extrabold text-slate-900 text-sm">#{orderNumber}</span>
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase block">Oda:</span>
+                  <span className="font-extrabold text-slate-900 dark:text-slate-100 text-sm">#{orderNumber}</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase block">Kiasi cha Kulipa:</span>
-                  <span className="font-extrabold text-brand-700 text-base">
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase block">Kiasi cha Kulipa:</span>
+                  <span className="font-extrabold text-brand-700 dark:text-brand-500 text-base">
                     TZS {amount.toLocaleString()}
                   </span>
                 </div>
@@ -259,9 +259,9 @@ export const PaymentDemoModal: React.FC<PaymentDemoModalProps> = ({
                 <button
                   type="button"
                   onClick={handleQuickDemoPay}
-                  className="w-full py-2.5 px-4 bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors"
+                  className="w-full py-2.5 px-4 bg-brand-50 dark:bg-brand-950/40 hover:bg-brand-100 dark:hover:bg-brand-900/40 text-brand-700 dark:text-brand-400 border border-brand-200 dark:border-brand-700 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors"
                 >
-                  <Zap className="w-4 h-4 text-brand-600" />
+                  <Zap className="w-4 h-4 text-brand-600 dark:text-brand-400" />
                   Lipa Papo Hapo (Quick Demo 1-Click Pay)
                 </button>
               </div>
@@ -273,8 +273,8 @@ export const PaymentDemoModal: React.FC<PaymentDemoModalProps> = ({
             <div className="py-12 text-center space-y-4">
               <div className="w-16 h-16 rounded-full border-4 border-brand-500 border-t-transparent animate-spin mx-auto" />
               <div>
-                <h4 className="font-extrabold text-slate-900 text-base">Inathibitisha Malipo...</h4>
-                <p className="text-xs text-slate-500 mt-1">
+                <h4 className="font-extrabold text-slate-900 dark:text-slate-100 text-base">Inathibitisha Malipo...</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   Inawasiliana na mtandao wa {provider.name} kukamilisha muamala.
                 </p>
               </div>
@@ -284,17 +284,17 @@ export const PaymentDemoModal: React.FC<PaymentDemoModalProps> = ({
           {/* STEP 3: SUCCESS */}
           {step === 'SUCCESS' && (
             <div className="py-8 text-center space-y-4 animate-scaleUp">
-              <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto shadow-md">
+              <div className="w-16 h-16 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-md">
                 <CheckCircle2 className="w-10 h-10 stroke-[2.5]" />
               </div>
               <div>
-                <h4 className="font-extrabold text-slate-900 text-lg">Malipo Yamethibitishwa! 🎉</h4>
-                <p className="text-xs text-slate-500 mt-1">
+                <h4 className="font-extrabold text-slate-900 dark:text-slate-100 text-lg">Malipo Yamethibitishwa! 🎉</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   Oda yako #{orderNumber} imelipiwa kikamilifu. Inafungua ramani ya Live GPS Tracking...
                 </p>
               </div>
 
-              <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-800 font-semibold">
+              <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 font-semibold">
                 Kiasi: TZS {amount.toLocaleString()} • Njia: {provider.name}
               </div>
             </div>
@@ -303,12 +303,12 @@ export const PaymentDemoModal: React.FC<PaymentDemoModalProps> = ({
           {/* STEP 4: FAILED */}
           {step === 'FAILED' && (
             <div className="py-8 text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto shadow-md">
+              <div className="w-16 h-16 rounded-full bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto shadow-md">
                 <AlertCircle className="w-10 h-10" />
               </div>
               <div>
-                <h4 className="font-extrabold text-slate-900 text-lg">Malipo Yameshindikana</h4>
-                <p className="text-xs text-rose-600 mt-1">{errorMessage}</p>
+                <h4 className="font-extrabold text-slate-900 dark:text-slate-100 text-lg">Malipo Yameshindikana</h4>
+                <p className="text-xs text-rose-600 dark:text-rose-400 mt-1">{errorMessage}</p>
               </div>
 
               <Button

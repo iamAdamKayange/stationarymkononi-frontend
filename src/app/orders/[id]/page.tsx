@@ -145,8 +145,8 @@ export default function OrderTrackingPage() {
   if (!order) {
     return (
       <div className="max-w-md mx-auto my-12 text-center">
-        <h3 className="font-bold text-slate-800">Oda haikupatikana</h3>
-        <Link href="/orders" className="text-xs text-brand-600 underline mt-2 block">
+        <h3 className="font-bold text-slate-800 dark:text-slate-200">Oda haikupatikana</h3>
+        <Link href="/orders" className="text-xs text-brand-600 dark:text-brand-400 underline mt-2 block">
           Rudi kwenye orodha ya oda
         </Link>
       </div>
@@ -180,7 +180,7 @@ export default function OrderTrackingPage() {
       <div className="flex items-center justify-between">
         <Link
           href="/orders"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
         >
           <ArrowLeft className="w-4 h-4" /> Rudi kwenye Oda Zangu
         </Link>
@@ -198,25 +198,25 @@ export default function OrderTrackingPage() {
       </div>
 
       {/* Main Order Card */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-md space-y-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-md space-y-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">
                 Oda #{order.orderNumber}
               </h1>
               <Badge variant="brand" size="sm">
                 {order.status}
               </Badge>
             </div>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Imewekwa: {new Date(order.createdAt).toLocaleString('sw-TZ')}
             </p>
           </div>
 
           <div className="text-left sm:text-right">
-            <span className="text-xs text-slate-400 block">Jumla ya Malipo:</span>
-            <span className="text-lg sm:text-xl font-extrabold text-brand-700">
+            <span className="text-xs text-slate-400 dark:text-slate-500 block">Jumla ya Malipo:</span>
+            <span className="text-lg sm:text-xl font-extrabold text-brand-700 dark:text-brand-500">
               TZS {order.totalAmount.toLocaleString()}
             </span>
             <div className="mt-1">
@@ -232,14 +232,14 @@ export default function OrderTrackingPage() {
 
         {/* Unpaid Order Demo Payment Prompt */}
         {order.payment?.status !== 'PAID' && (
-          <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
+          <div className="p-4 bg-amber-50 dark:bg-amber-950/20 rounded-2xl border border-amber-200 dark:border-amber-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fadeIn">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 flex items-center justify-center flex-shrink-0">
                 <CreditCard className="w-4 h-4" />
               </div>
               <div>
-                <div className="font-bold text-xs text-amber-900">Malipo Bado Hayajakamilika</div>
-                <div className="text-[11px] text-amber-700">
+                <div className="font-bold text-xs text-amber-900 dark:text-amber-300">Malipo Bado Hayajakamilika</div>
+                <div className="text-[11px] text-amber-700 dark:text-amber-400">
                   Thibitisha malipo kupitia M-Pesa / Tigo / Airtel ili stationery ianze kuchapa mara moja.
                 </div>
               </div>
@@ -260,7 +260,7 @@ export default function OrderTrackingPage() {
 
         {/* Live GPS Map Component */}
         <div>
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-2">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-2">
             <MapPin className="w-4 h-4 text-brand-600" />
             Live Delivery GPS Tracking (Ramani ya Moja kwa Moja)
           </h3>
@@ -285,14 +285,14 @@ export default function OrderTrackingPage() {
         {/* Rider & Stationery Information Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Stationery Shop Card */}
-          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-            <div className="text-[10px] font-bold uppercase text-amber-700">Stationery Shop</div>
-            <h4 className="font-bold text-slate-900 text-sm">{order.stationery?.name}</h4>
-            <p className="text-xs text-slate-500">{order.stationery?.address}</p>
+          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 space-y-2">
+            <div className="text-[10px] font-bold uppercase text-amber-700 dark:text-amber-500">Stationery Shop</div>
+            <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm">{order.stationery?.name}</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{order.stationery?.address}</p>
             {order.stationery?.phoneNumber && (
               <a
                 href={`tel:${order.stationery.phoneNumber}`}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 hover:underline pt-1"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 dark:text-brand-500 hover:underline pt-1"
               >
                 <Phone className="w-3.5 h-3.5" /> Piga Simu: {order.stationery.phoneNumber}
               </a>
@@ -300,25 +300,25 @@ export default function OrderTrackingPage() {
           </div>
 
           {/* Rider Card */}
-          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-            <div className="text-[10px] font-bold uppercase text-blue-700">Delivery Rider</div>
+          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 space-y-2">
+            <div className="text-[10px] font-bold uppercase text-blue-700 dark:text-blue-500">Delivery Rider</div>
             {rider ? (
               <>
-                <h4 className="font-bold text-slate-900 text-sm">{rider.user?.fullName}</h4>
-                <p className="text-xs text-slate-500">
+                <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm">{rider.user?.fullName}</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   {rider.vehicleType} • Bamba: <strong>{rider.vehiclePlate || 'N/A'}</strong>
                 </p>
                 {rider.user?.phoneNumber && (
                   <a
                     href={`tel:${rider.user.phoneNumber}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:underline pt-1"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 dark:text-blue-500 hover:underline pt-1"
                   >
                     <Phone className="w-3.5 h-3.5" /> Piga Simu Rider: {rider.user.phoneNumber}
                   </a>
                 )}
               </>
             ) : (
-              <p className="text-xs text-slate-500 italic py-2">
+              <p className="text-xs text-slate-500 dark:text-slate-400 italic py-2">
                 Mfumo unatafuta rider wa karibu kukabidhiwa mzigo wako...
               </p>
             )}
@@ -327,49 +327,49 @@ export default function OrderTrackingPage() {
 
         {/* Itemized Receipt */}
         <div className="space-y-3 pt-2">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Vipengele vya Oda (Items Ordered)
           </h3>
-          <div className="divide-y divide-slate-100 border border-slate-100 rounded-2xl overflow-hidden">
+          <div className="divide-y divide-slate-100 dark:divide-slate-800 border border-slate-100 dark:border-slate-800 rounded-2xl overflow-hidden">
             {order.orderItems?.map((item) => (
-              <div key={item.id} className="p-3.5 bg-slate-50/50 flex items-center justify-between text-xs">
+              <div key={item.id} className="p-3.5 bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between text-xs">
                 <div>
-                  <div className="font-bold text-slate-800">{item.title}</div>
-                  <div className="text-slate-400 text-[11px]">Idadi: {item.quantity}</div>
+                  <div className="font-bold text-slate-800 dark:text-slate-200">{item.title}</div>
+                  <div className="text-slate-400 dark:text-slate-500 text-[11px]">Idadi: {item.quantity}</div>
                 </div>
-                <span className="font-bold text-slate-900">TZS {item.totalPrice.toLocaleString()}</span>
+                <span className="font-bold text-slate-900 dark:text-slate-100">TZS {item.totalPrice.toLocaleString()}</span>
               </div>
             ))}
           </div>
 
           {order.documents && order.documents.length > 0 && (
             <div className="space-y-3 pt-1">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Nyaraka Zilizopakiwa (Upload Files)
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {order.documents.map((doc) => (
                   <div
                     key={doc.id}
-                    className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3"
+                    className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 shadow-xs space-y-3"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 rounded-2xl bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400 flex items-center justify-center flex-shrink-0">
                         <FileText className="w-5 h-5" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-2">
-                          <h4 className="font-bold text-slate-900 text-sm break-words">
+                          <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm break-words">
                             {doc.fileName}
                           </h4>
                           <Badge variant="neutral" size="sm" className="whitespace-nowrap">
                             {doc.fileType.includes('pdf') ? 'PDF' : 'FILE'}
                           </Badge>
                         </div>
-                        <p className="text-[11px] text-slate-500 mt-1">
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
                           {formatFileSize(doc.fileSize)} • Kurasa {doc.pageCount}
                         </p>
-                        <p className="text-[11px] text-slate-400 mt-0.5">
+                        <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">
                           Imepakiwa na {doc.uploadedBy?.fullName || 'mtumiaji'} •{' '}
                           {new Date(doc.createdAt).toLocaleString('sw-TZ')}
                         </p>
@@ -390,7 +390,7 @@ export default function OrderTrackingPage() {
                       <button
                         type="button"
                         onClick={() => downloadDocument(doc)}
-                        className="inline-flex flex-1 min-w-[120px] items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                        className="inline-flex flex-1 min-w-[120px] items-center justify-center rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                       >
                         <Download className="w-4 h-4 mr-1.5" />
                         Pakua
@@ -403,7 +403,7 @@ export default function OrderTrackingPage() {
           )}
 
           {/* Totals */}
-          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1.5 text-xs text-slate-600">
+          <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
             <div className="flex justify-between">
               <span>Gharama ya Printing:</span>
               <span>TZS {order.printingCost.toLocaleString()}</span>
@@ -416,9 +416,9 @@ export default function OrderTrackingPage() {
               <span>Gharama ya Usafiri (Delivery):</span>
               <span>TZS {order.deliveryFee.toLocaleString()}</span>
             </div>
-            <div className="pt-2 border-t border-slate-200 flex justify-between font-extrabold text-sm text-slate-900">
+            <div className="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between font-extrabold text-sm text-slate-900 dark:text-slate-100">
               <span>JUMLA KUU:</span>
-              <span className="text-brand-700">TZS {order.totalAmount.toLocaleString()}</span>
+              <span className="text-brand-700 dark:text-brand-500">TZS {order.totalAmount.toLocaleString()}</span>
             </div>
           </div>
         </div>

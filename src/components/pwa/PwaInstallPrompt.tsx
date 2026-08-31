@@ -80,7 +80,7 @@ export const PwaInstallPrompt: React.FC = () => {
 
   return (
     <div className="fixed bottom-20 md:bottom-6 left-4 right-4 md:left-auto md:right-6 md:max-w-md z-50">
-      <div className="rounded-3xl border border-emerald-200 bg-white/95 backdrop-blur-xl shadow-2xl p-4 sm:p-5">
+      <div className="rounded-3xl border border-emerald-200 dark:border-emerald-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <div className="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/20">
             <Smartphone className="w-5 h-5" />
@@ -88,15 +88,15 @@ export const PwaInstallPrompt: React.FC = () => {
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <h3 className="font-extrabold text-slate-900 text-sm">Install Stationery Mkononi</h3>
-                <p className="text-xs text-slate-600 mt-1">
+                <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-sm">Install Stationery Mkononi</h3>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                   Pakua app ili ifunguke kama PWA, ifanye kazi haraka, na ionekane kama native app.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setDismissed(true)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                className="p-1.5 rounded-lg text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                 aria-label="Close install prompt"
               >
                 <X className="w-4 h-4" />
@@ -112,13 +112,13 @@ export const PwaInstallPrompt: React.FC = () => {
                 <Download className="w-4 h-4" />
                 Download App
               </button>
-              <span className="inline-flex items-center gap-1.5 text-[11px] text-slate-500">
+              <span className="inline-flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400">
                 <WifiOff className="w-3.5 h-3.5" />
                 Works offline after install
               </span>
               <a
                 href={getDashboardRouteForRole(user.role)}
-                className="text-xs font-semibold text-emerald-700 hover:text-emerald-800"
+                className="text-xs font-semibold text-emerald-700 dark:text-emerald-500 hover:text-emerald-800 dark:hover:text-emerald-400"
               >
                 Endelea kwenye dashboard
               </a>

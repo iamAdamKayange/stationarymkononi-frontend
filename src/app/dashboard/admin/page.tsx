@@ -96,8 +96,8 @@ export default function AdminDashboardPage() {
   if (!isAuthenticated || user?.role !== 'ADMIN') {
     return (
       <div className="max-w-md mx-auto my-12 text-center">
-        <h3 className="font-bold text-slate-800">Ukurasa huu unahitaji haki za Msimamizi (Admin)</h3>
-        <Link href="/auth/login" className="text-xs text-brand-600 underline mt-2 block">
+        <h3 className="font-bold text-slate-800 dark:text-slate-200">Ukurasa huu unahitaji haki za Msimamizi (Admin)</h3>
+        <Link href="/auth/login" className="text-xs text-brand-600 dark:text-brand-400 underline mt-2 block">
           Ingia kama Admin
         </Link>
       </div>
@@ -127,13 +127,13 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200">
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-700">
         <button
           onClick={() => setTab('METRICS')}
           className={`pb-3 px-4 text-xs font-bold border-b-2 transition-all ${
             tab === 'METRICS'
-              ? 'border-brand-600 text-brand-700'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-brand-600 text-brand-700 dark:text-brand-400'
+              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           Takwimu Kuu (Analytics)
@@ -142,8 +142,8 @@ export default function AdminDashboardPage() {
           onClick={() => setTab('USERS')}
           className={`pb-3 px-4 text-xs font-bold border-b-2 transition-all ${
             tab === 'USERS'
-              ? 'border-brand-600 text-brand-700'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-brand-600 text-brand-700 dark:text-brand-400'
+              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           Uhakiki wa Watumiaji & Maduka ({users.length})
@@ -152,8 +152,8 @@ export default function AdminDashboardPage() {
           onClick={() => setTab('LOGS')}
           className={`pb-3 px-4 text-xs font-bold border-b-2 transition-all ${
             tab === 'LOGS'
-              ? 'border-brand-600 text-brand-700'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-brand-600 text-brand-700 dark:text-brand-400'
+              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           Audit Logs ({auditLogs.length})
@@ -164,51 +164,51 @@ export default function AdminDashboardPage() {
       {tab === 'METRICS' && metrics && (
         <div className="space-y-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-              <span className="text-xs font-bold uppercase text-slate-400">Jumla ya Wateja</span>
-              <div className="text-2xl font-extrabold text-slate-900 mt-1">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
+              <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500">Jumla ya Wateja</span>
+              <div className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 mt-1">
                 {metrics.totalCustomers}
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-              <span className="text-xs font-bold uppercase text-slate-400">Stationeries Zote</span>
-              <div className="text-2xl font-extrabold text-amber-600 mt-1">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
+              <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500">Stationeries Zote</span>
+              <div className="text-2xl font-extrabold text-amber-600 dark:text-amber-500 mt-1">
                 {metrics.totalStationeries}
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-              <span className="text-xs font-bold uppercase text-slate-400">Riders Wote</span>
-              <div className="text-2xl font-extrabold text-blue-600 mt-1">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
+              <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500">Riders Wote</span>
+              <div className="text-2xl font-extrabold text-blue-600 dark:text-blue-500 mt-1">
                 {metrics.totalRiders}
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-              <span className="text-xs font-bold uppercase text-slate-400">Jumla ya Oda</span>
-              <div className="text-2xl font-extrabold text-brand-600 mt-1">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
+              <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500">Jumla ya Oda</span>
+              <div className="text-2xl font-extrabold text-brand-600 dark:text-brand-500 mt-1">
                 {metrics.totalOrders}
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-              <span className="text-xs font-bold uppercase text-slate-400">Jumla ya Mauzo (Gross)</span>
-              <div className="text-2xl font-extrabold text-brand-700 mt-1">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
+              <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500">Jumla ya Mauzo (Gross)</span>
+              <div className="text-2xl font-extrabold text-brand-700 dark:text-brand-500 mt-1">
                 TZS {metrics.totalRevenue.toLocaleString()}
               </div>
             </div>
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-              <span className="text-xs font-bold uppercase text-slate-400">Mauzo ya Printing</span>
-              <div className="text-2xl font-extrabold text-slate-800 mt-1">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
+              <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500">Mauzo ya Printing</span>
+              <div className="text-2xl font-extrabold text-slate-800 dark:text-slate-200 mt-1">
                 TZS {metrics.printingRevenue.toLocaleString()}
               </div>
             </div>
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-              <span className="text-xs font-bold uppercase text-slate-400">Ada ya Usafiri (Delivery)</span>
-              <div className="text-2xl font-extrabold text-slate-800 mt-1">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
+              <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500">Ada ya Usafiri (Delivery)</span>
+              <div className="text-2xl font-extrabold text-slate-800 dark:text-slate-200 mt-1">
                 TZS {metrics.deliveryRevenue.toLocaleString()}
               </div>
             </div>
@@ -218,13 +218,13 @@ export default function AdminDashboardPage() {
 
       {/* TAB 2: USERS & VERIFICATION QUEUE */}
       {tab === 'USERS' && (
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <h3 className="font-bold text-sm text-slate-900">Usimamizi na Uhakiki wa Watumiaji</h3>
+            <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100">Usimamizi na Uhakiki wa Watumiaji</h3>
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100"
             >
               <option value="">Roles Zote</option>
               <option value="CUSTOMER">Wateja (Customer)</option>
@@ -234,22 +234,22 @@ export default function AdminDashboardPage() {
             </select>
           </div>
 
-          <div className="divide-y divide-slate-100 overflow-x-auto">
+          <div className="divide-y divide-slate-100 dark:divide-slate-800 overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="text-slate-400 uppercase font-bold border-b border-slate-100">
+                <tr className="text-slate-400 dark:text-slate-500 uppercase font-bold border-b border-slate-100 dark:border-slate-800">
                   <th className="pb-3">Jina & Taarifa</th>
                   <th className="pb-3">Aina (Role)</th>
                   <th className="pb-3">Hali (Status)</th>
                   <th className="pb-3 text-right">Vitendo (Actions)</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {users.map((u) => (
-                  <tr key={u.id} className="hover:bg-slate-50">
+                  <tr key={u.id} className="hover:bg-slate-50 dark:hover:bg-slate-800">
                     <td className="py-3">
-                      <div className="font-bold text-slate-900">{u.fullName}</div>
-                      <div className="text-slate-400 text-[11px]">
+                      <div className="font-bold text-slate-900 dark:text-slate-100">{u.fullName}</div>
+                      <div className="text-slate-400 dark:text-slate-500 text-[11px]">
                         {u.email} • {u.phoneNumber}
                       </div>
                     </td>
@@ -302,27 +302,27 @@ export default function AdminDashboardPage() {
 
       {/* TAB 3: AUDIT LOGS */}
       {tab === 'LOGS' && (
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-          <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
+          <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Activity className="w-4 h-4 text-brand-600" />
             Platform Audit Trail Logs
           </h3>
 
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-slate-100 dark:divide-slate-800">
             {auditLogs.map((log) => (
               <div key={log.id} className="py-3 flex items-start justify-between text-xs">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900">{log.action}</span>
+                    <span className="font-bold text-slate-900 dark:text-slate-100">{log.action}</span>
                     {log.order && (
                       <Badge variant="info" size="sm">
                         Oda #{log.order.orderNumber}
                       </Badge>
                     )}
                   </div>
-                  <p className="text-slate-500 mt-0.5">{log.details}</p>
+                  <p className="text-slate-500 dark:text-slate-400 mt-0.5">{log.details}</p>
                 </div>
-                <div className="text-right text-[11px] text-slate-400">
+                <div className="text-right text-[11px] text-slate-400 dark:text-slate-500">
                   <div>{new Date(log.createdAt).toLocaleString('sw-TZ')}</div>
                   {log.user && <div>Na: {log.user.fullName}</div>}
                 </div>
