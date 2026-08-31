@@ -39,7 +39,7 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn">
       <div
-        className={`w-full ${maxWidths[maxWidth]} bg-white dark:bg-slate-900 rounded-2xl shadow-xl overflow-hidden transform transition-all animate-scaleUp border border-slate-100 dark:border-slate-850`}
+        className={`w-full ${maxWidths[maxWidth]} bg-white dark:bg-slate-900 rounded-2xl shadow-xl overflow-hidden transform transition-all animate-scaleUp border border-slate-100 dark:border-slate-800`}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
           <h3 className="font-semibold text-slate-900 dark:text-slate-100 text-base sm:text-lg">{title}</h3>
@@ -50,7 +50,7 @@ export const Modal: React.FC<ModalProps> = ({
             <X className="w-5 h-5" />
           </button>
         </div>
-        <div className="p-6 max-h-[80vh] overflow-y-auto">{children}</div>
+        <div className="p-6 max-h-[80vh] overflow-y-auto text-slate-900 dark:text-slate-100">{children}</div>
       </div>
     </div>
   );

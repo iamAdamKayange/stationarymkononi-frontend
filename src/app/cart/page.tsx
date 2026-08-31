@@ -39,7 +39,7 @@ export default function CartPage() {
     return (
       <div className="max-w-md mx-auto my-12 animate-fadeIn">
         <EmptyState
-          icon={<ShoppingBag className="w-8 h-8 text-slate-400" />}
+          icon={<ShoppingBag className="w-8 h-8 text-slate-400 dark:text-slate-500" />}
           title="Kikapu Chako Kiko Wazi"
           description="Bado hujaweka oda ya printing au bidhaa yoyote ya stationery."
           actionText="Anza Kuchapa Nyaraka (Print)"

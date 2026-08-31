@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Navbar } from '../components/layout/Navbar';
 import { BottomNav } from '../components/layout/BottomNav';
@@ -14,8 +14,6 @@ export const metadata: Metadata = {
   description:
     'Mfumo wa kisasa unaowaunganisha wateja, stationery shops, delivery riders na huduma za printing na stationery Tanzania.',
   manifest: '/manifest.json',
-  themeColor: '#16a34a',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -35,6 +33,14 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#16a34a',
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -47,14 +53,22 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                if (localStorage.getItem('stationery-theme') === 'dark' || (!('stationery-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                const storedTheme = localStorage.getItem('stationery-theme');
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                if (storedTheme === 'dark' || (!storedTheme && systemDark)) {
                   document.documentElement.classList.add('dark');
                 } else {
                   document.documentElement.classList.remove('dark');
                 }
+                
                 var lang = localStorage.getItem('stationery-lang') || 'sw';
                 document.documentElement.setAttribute('lang', lang);
-              } catch (_) {}
+                
+                console.log('Theme initialized:', storedTheme || (systemDark ? 'dark (system)' : 'light (system)'));
+              } catch (error) {
+                console.error('Theme initialization error:', error);
+              }
             `,
           }}
         />
