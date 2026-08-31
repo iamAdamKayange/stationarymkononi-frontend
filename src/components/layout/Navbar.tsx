@@ -93,7 +93,7 @@ export const Navbar: React.FC = () => {
                   className={`px-3.5 py-2 rounded-xl text-sm font-medium transition-colors ${
                     isActive
                       ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-700 dark:text-brand-400 font-semibold'
-                      : 'text-slate-600 dark:text-slate-350 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
                   }`}
                 >
                   {link.label}
@@ -107,7 +107,7 @@ export const Navbar: React.FC = () => {
             {/* Language Switcher */}
             <button
               onClick={() => setLanguage(language === 'en' ? 'sw' : 'en')}
-              className="p-2 sm:p-2.5 text-slate-600 dark:text-slate-350 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl transition-colors font-bold text-xs flex items-center gap-1"
+              className="p-2 sm:p-2.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl transition-colors font-bold text-xs flex items-center gap-1"
               title="Switch Language"
             >
               <Globe className="w-4 h-4 text-slate-500 dark:text-slate-400" />
@@ -117,7 +117,7 @@ export const Navbar: React.FC = () => {
             {/* Theme Switcher */}
             <button
               onClick={toggleTheme}
-              className="p-2 sm:p-2.5 text-slate-600 dark:text-slate-350 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl transition-colors"
+              className="p-2 sm:p-2.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl transition-colors"
               title={theme === 'light' ? 'Dark Mode' : 'Light Mode'}
             >
               {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
@@ -126,7 +126,7 @@ export const Navbar: React.FC = () => {
             {/* Cart icon */}
             <Link
               href="/cart"
-              className="relative p-2 sm:p-2.5 text-slate-600 dark:text-slate-350 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl transition-colors"
+              className="relative p-2 sm:p-2.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl transition-colors"
               title={t('common.cart')}
             >
               <ShoppingBag className="w-5 h-5" />
@@ -141,7 +141,7 @@ export const Navbar: React.FC = () => {
             {isAuthenticated && (
               <Link
                 href="/notifications"
-                className="relative p-2 sm:p-2.5 text-slate-600 dark:text-slate-350 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl transition-colors"
+                className="relative p-2 sm:p-2.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl transition-colors"
                 title={t('navbar.notifications')}
               >
                 <Bell className="w-5 h-5" />
@@ -186,7 +186,7 @@ export const Navbar: React.FC = () => {
               <div className="flex items-center gap-1 sm:gap-2">
                 <Link
                   href="/auth/login"
-                  className="px-3 sm:px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-350 hover:text-slate-900 dark:hover:text-white rounded-xl transition-colors"
+                  className="px-3 sm:px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-xl transition-colors"
                 >
                   {t('common.login')}
                 </Link>
@@ -202,7 +202,7 @@ export const Navbar: React.FC = () => {
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-slate-600 dark:text-slate-350 hover:text-slate-900 dark:hover:text-white rounded-xl"
+              className="md:hidden p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -217,7 +217,7 @@ export const Navbar: React.FC = () => {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-350 hover:bg-brand-50 dark:hover:bg-brand-950/20 hover:text-brand-700 dark:hover:text-brand-400 rounded-xl"
+                className="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-brand-50 dark:hover:bg-brand-950/20 hover:text-brand-700 dark:hover:text-brand-400 rounded-xl"
               >
                 {link.icon && <link.icon className="w-4 h-4 text-brand-600" />}
                 {link.label}
