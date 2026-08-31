@@ -19,6 +19,7 @@ import {
   ShieldCheck,
   Store,
   Star,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '../../../../components/ui/Button';
 import { Badge } from '../../../../components/ui/Badge';
@@ -35,6 +36,7 @@ export default function StationeryProfilePage() {
   const [saving, setSaving] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
+  const [uploadingBanner, setUploadingBanner] = useState(false);
   
   // Form state
   const [name, setName] = useState('');
@@ -108,16 +110,24 @@ export default function StationeryProfilePage() {
     formData.append('logo', file);
 
     try {
+      console.log('Uploading logo...', file.name, file.size);
       const res = (await api.post('/profile/stationery/logo', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 30000,
       })) as any;
+      
+      console.log('Logo upload response:', res);
       
       if (res?.data?.logoUrl) {
         setLogoPreview(res.data.logoUrl);
         toast.success('Logo imewekwa vizuri! 🎉');
+      } else {
+        toast.error('Imeshindikana kuweka logo - no URL returned');
       }
-    } catch (err) {
-      toast.error('Imeshindikana kuweka logo');
+    } catch (err: any) {
+      console.error('Logo upload error:', err);
+      const errorMessage = err?.response?.data?.message || err?.message || 'Imeshindikana kuweka logo';
+      toast.error(errorMessage);
     } finally {
       setUploadingLogo(false);
     }
@@ -163,6 +173,49 @@ export default function StationeryProfilePage() {
       toast.error(errorMessage);
     } finally {
       setUploadingCover(false);
+    }
+  };
+
+  const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Tafadhali weka picha ya JPEG, PNG, au WebP tu');
+      return;
+    }
+
+    if (file.size > 15 * 1024 * 1024) {
+      toast.error('Banner image isipitishe ukubwa wa 15MB');
+      return;
+    }
+
+    setUploadingBanner(true);
+    const formData = new FormData();
+    formData.append('banner', file);
+
+    try {
+      console.log('Uploading banner image...', file.name, file.size);
+      const res = (await api.post('/profile/stationery/banner', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 30000,
+      })) as any;
+      
+      console.log('Banner upload response:', res);
+      
+      if (res?.data?.bannerUrl) {
+        setCoverPreview(res.data.bannerUrl); // Using same cover preview for banner
+        toast.success('Banner image imewekwa vizuri! 🎉');
+      } else {
+        toast.error('Imeshindikana kuweka banner image - no URL returned');
+      }
+    } catch (err: any) {
+      console.error('Banner upload error:', err);
+      const errorMessage = err?.response?.data?.message || err?.message || 'Imeshindikana kuweka banner image';
+      toast.error(errorMessage);
+    } finally {
+      setUploadingBanner(false);
     }
   };
 
@@ -237,20 +290,33 @@ export default function StationeryProfilePage() {
               <Store className="w-16 h-16 text-white/20" />
             </div>
           )}
-          <label className="absolute bottom-4 right-4 bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-colors flex items-center gap-2 shadow-md">
-            <Camera className="w-4 h-4" />
-            Badilisha Cover
-            <input
-              type="file"
-              accept="image/jpeg,image/jpg,image/png,image/webp"
-              onChange={handleCoverUpload}
-              className="hidden"
-              disabled={uploadingCover}
-            />
-          </label>
-          {uploadingCover && (
+          <div className="absolute bottom-4 right-4 flex items-center gap-2">
+            <label className="bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-colors flex items-center gap-2 shadow-md">
+              <Camera className="w-4 h-4" />
+              Cover Image
+              <input
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/webp"
+                onChange={handleCoverUpload}
+                className="hidden"
+                disabled={uploadingCover}
+              />
+            </label>
+            <label className="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-colors flex items-center gap-2 shadow-md">
+              <Sparkles className="w-4 h-4" />
+              Banner
+              <input
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/webp"
+                onChange={handleBannerUpload}
+                className="hidden"
+                disabled={uploadingBanner}
+              />
+            </label>
+          </div>
+          {(uploadingCover || uploadingBanner) && (
             <div className="absolute inset-0 bg-white/80 dark:bg-slate-900/80 flex items-center justify-center">
-              <LoadingSpinner message="" />
+              <LoadingSpinner message={uploadingCover ? "Inapakia cover..." : "Inapakia banner..."} />
             </div>
           )}
         </div>
