@@ -9,8 +9,12 @@ export const getSocket = (token?: string): Socket => {
       auth: { token },
       autoConnect: true,
       reconnection: true,
-      reconnectionAttempts: 10,
-      reconnectionDelay: 1000,
+      reconnectionAttempts: 20,
+      reconnectionDelay: 500,
+      reconnectionDelayMax: 2000,
+      timeout: 10000,
+      transports: ['websocket', 'polling'],
+      forceNew: false,
     });
   } else if (token && socket.disconnected) {
     socket.auth = { token };

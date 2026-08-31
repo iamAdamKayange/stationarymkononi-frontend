@@ -143,16 +143,24 @@ export default function StationeryProfilePage() {
     formData.append('cover', file);
 
     try {
+      console.log('Uploading cover image...', file.name, file.size);
       const res = (await api.post('/profile/stationery/cover', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 30000,
       })) as any;
+      
+      console.log('Cover upload response:', res);
       
       if (res?.data?.coverImageUrl) {
         setCoverPreview(res.data.coverImageUrl);
         toast.success('Cover image imewekwa vizuri! 🎉');
+      } else {
+        toast.error('Imeshindikana kuweka cover image - no URL returned');
       }
-    } catch (err) {
-      toast.error('Imeshindikana kuweka cover image');
+    } catch (err: any) {
+      console.error('Cover upload error:', err);
+      const errorMessage = err?.response?.data?.message || err?.message || 'Imeshindikana kuweka cover image';
+      toast.error(errorMessage);
     } finally {
       setUploadingCover(false);
     }
