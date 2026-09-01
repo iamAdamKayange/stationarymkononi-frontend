@@ -24,6 +24,7 @@ import {
 import { Button } from '../../../../components/ui/Button';
 import { Badge } from '../../../../components/ui/Badge';
 import { LoadingSpinner } from '../../../../components/ui/LoadingSpinner';
+import { LocationPickerMap } from '../../../../components/maps/LocationPickerMap';
 import { useAuthStore } from '../../../../store/useAuthStore';
 import { api } from '../../../../lib/api';
 import toast from 'react-hot-toast';
@@ -46,6 +47,8 @@ export default function StationeryProfilePage() {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [region, setRegion] = useState('');
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
   const [openingHours, setOpeningHours] = useState('');
   const [isOpen, setIsOpen] = useState(true);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
@@ -76,6 +79,8 @@ export default function StationeryProfilePage() {
           setAddress(stationeryData.address || '');
           setCity(stationeryData.city || '');
           setRegion(stationeryData.region || '');
+          setLatitude(stationeryData.latitude || null);
+          setLongitude(stationeryData.longitude || null);
           setOpeningHours(stationeryData.openingHours || '');
           setIsOpen(stationeryData.isOpen !== false);
           setLogoPreview(stationeryData.logoUrl || null);
@@ -230,6 +235,8 @@ export default function StationeryProfilePage() {
         address,
         city,
         region,
+        latitude,
+        longitude,
         openingHours,
         isOpen,
       });
@@ -241,6 +248,14 @@ export default function StationeryProfilePage() {
       toast.error('Imeshindikana kuhifadhi profile');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleLocationSelect = (lat: number, lng: number, addressText?: string) => {
+    setLatitude(lat);
+    setLongitude(lng);
+    if (addressText) {
+      setAddress(addressText);
     }
   };
 
@@ -425,6 +440,43 @@ export default function StationeryProfilePage() {
                 placeholder="Mfano: Sam Nujoma Rd, Mwenge Bus Stand"
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-slate-100"
               />
+            </div>
+          </div>
+
+          {/* Location Map Section */}
+          <div className="sm:col-span-2">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-brand-600" />
+              Eeo la Duka (Map Location)
+            </label>
+            <LocationPickerMap
+              initialLat={latitude || undefined}
+              initialLng={longitude || undefined}
+              onLocationSelect={handleLocationSelect}
+            />
+            <div className="mt-2 grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-semibold text-slate-600 dark:text-slate-400 mb-1">Latitude</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={latitude || ''}
+                  onChange={(e) => setLatitude(parseFloat(e.target.value) || null)}
+                  placeholder="-6.8"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-semibold text-slate-600 dark:text-slate-400 mb-1">Longitude</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={longitude || ''}
+                  onChange={(e) => setLongitude(parseFloat(e.target.value) || null)}
+                  placeholder="39.2"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100"
+                />
+              </div>
             </div>
           </div>
 

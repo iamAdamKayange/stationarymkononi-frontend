@@ -154,6 +154,20 @@ export default function PrintPage() {
     setUploadedDoc(document);
   };
 
+  const handleDeleteDocument = async () => {
+    if (!uploadedDoc) return;
+
+    try {
+      await api.delete(`/documents/${uploadedDoc.id}`);
+      setUploadedDoc(null);
+      toast.success('Nyaraka imefutwa');
+    } catch (err: any) {
+      console.error('Delete error:', err);
+      const errorMessage = err?.response?.data?.message || err?.message || 'Imeshindikana kufuta nyaraka';
+      toast.error(errorMessage);
+    }
+  };
+
   const handleSubmitDirectOrder = async () => {
     if (!uploadedDoc || !apexStationery) {
       toast.error('Tafadhali hakikisha nyaraka imepakiwa na APEX Stationery inapatikana');
@@ -195,7 +209,7 @@ export default function PrintPage() {
 
       const res = (await api.post('/orders', orderData)) as any;
       
-      toast.success('Oda ya uchapaji imewasilishwa kwa APEX! 🎉');
+      toast.success('Oda ya uchapaji imewasilishwa! Malipo yanahitajika.');
       router.push(`/orders/${res.data.order.id}`);
     } catch (err: any) {
       console.error('Order submission error:', err);
@@ -216,7 +230,7 @@ export default function PrintPage() {
           </div>
           <h1 className="text-xl sm:text-3xl font-extrabold">Uchapaji wa Nyaraka (Printing)</h1>
           <p className="text-xs sm:text-sm text-brand-100 mt-1">
-            Pakia document yako, chagua ukubwa, rangi na binding. Oda yako itachapwa na APEX Digital & Printing Express.
+            Pakia document yako, chagua ukubwa, rangi na binding. Malipo yanahitajishwa kabla ya uchapaji. Oda yako itachapwa na APEX Digital & Printing Express.
           </p>
         </div>
         <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20">
@@ -259,6 +273,28 @@ export default function PrintPage() {
               </h3>
 
               <DocumentUpload onUploadSuccess={handleDocumentUploadSuccess} />
+
+              {uploadedDoc && (
+                <div className="mt-4 p-4 bg-brand-50 dark:bg-brand-950/30 rounded-xl border border-brand-200 dark:border-brand-800">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <FileText className="w-5 h-5 text-brand-600 dark:text-brand-400" />
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{uploadedDoc.fileName}</p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400">{uploadedDoc.pageCount} kurasa • {(uploadedDoc.fileSize / 1024 / 1024).toFixed(2)} MB</p>
+                      </div>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleDeleteDocument}
+                      className="text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800 hover:bg-rose-50 dark:hover:bg-rose-950/20"
+                    >
+                      Futa
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Printing Options */}
