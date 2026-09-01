@@ -30,7 +30,7 @@ import toast from 'react-hot-toast';
 
 export default function StationeryProfilePage() {
   const router = useRouter();
-  const { user, isAuthenticated } = useAuthStore();
+  const { user, isAuthenticated, refreshUser } = useAuthStore();
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -119,8 +119,8 @@ export default function StationeryProfilePage() {
       console.log('Logo upload response:', res);
       
       if (res?.data?.logoUrl) {
-        setLogoPreview(res.data.logoUrl);
         toast.success('Logo imewekwa vizuri! 🎉');
+        await loadProfile(); // Reload profile to get updated data
       } else {
         toast.error('Imeshindikana kuweka logo - no URL returned');
       }
@@ -162,8 +162,8 @@ export default function StationeryProfilePage() {
       console.log('Cover upload response:', res);
       
       if (res?.data?.coverImageUrl) {
-        setCoverPreview(res.data.coverImageUrl);
         toast.success('Cover image imewekwa vizuri! 🎉');
+        await loadProfile(); // Reload profile to get updated data
       } else {
         toast.error('Imeshindikana kuweka cover image - no URL returned');
       }
@@ -205,8 +205,8 @@ export default function StationeryProfilePage() {
       console.log('Banner upload response:', res);
       
       if (res?.data?.bannerUrl) {
-        setCoverPreview(res.data.bannerUrl); // Using same cover preview for banner
         toast.success('Banner image imewekwa vizuri! 🎉');
+        await loadProfile(); // Reload profile to get updated data
       } else {
         toast.error('Imeshindikana kuweka banner image - no URL returned');
       }
@@ -236,6 +236,7 @@ export default function StationeryProfilePage() {
 
       toast.success('Stationery profile imehifadhiwa vizuri! ✅');
       await loadProfile();
+      await refreshUser(); // Refresh global auth state to get updated stationery data
     } catch (err) {
       toast.error('Imeshindikana kuhifadhi profile');
     } finally {
@@ -263,9 +264,9 @@ export default function StationeryProfilePage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 animate-fadeIn">
+    <div className="max-w-4xl mx-auto space-y-6 animate-fadeIn px-4 sm:px-0">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">Edit Stationery Profile</h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -518,11 +519,11 @@ export default function StationeryProfilePage() {
       </div>
 
       {/* Save Button */}
-      <div className="flex items-center justify-end gap-3">
-        <Button variant="outline" onClick={() => router.back()}>
+      <div className="flex flex-col sm:flex-row items-center justify-end gap-3">
+        <Button variant="outline" onClick={() => router.back()} className="w-full sm:w-auto">
           <X className="w-4 h-4 mr-1.5" /> Ghairi
         </Button>
-        <Button variant="primary" onClick={handleSave} isLoading={saving} leftIcon={<Save className="w-4 h-4" />}>
+        <Button variant="primary" onClick={handleSave} isLoading={saving} leftIcon={<Save className="w-4 h-4" />} className="w-full sm:w-auto">
           Hifadhi Mabadiliko
         </Button>
       </div>

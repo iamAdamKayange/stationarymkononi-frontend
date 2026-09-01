@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { User, Role } from '../types';
+import { api } from '../lib/api';
 
 interface AuthState {
   user: User | null;
@@ -9,6 +10,7 @@ interface AuthState {
   isLoading: boolean;
   setAuth: (user: User, accessToken: string, refreshToken: string) => void;
   setUser: (user: User) => void;
+  refreshUser: () => Promise<void>;
   logout: () => void;
   initialize: () => void;
 }
@@ -39,6 +41,27 @@ export const useAuthStore = create<AuthState>((set) => ({
       );
       return updated;
     });
+  },
+
+  refreshUser: async () => {
+    try {
+      const res = (await api.get('/auth/me')) as any;
+      if (res?.data) {
+        const updatedUser = res.data;
+        set((state) => {
+          const updated = { ...state, user: updatedUser };
+          localStorage.setItem(
+            'stationery-auth',
+            JSON.stringify({
+              state: { user: updatedUser, accessToken: state.accessToken, refreshToken: state.refreshToken },
+            })
+          );
+          return updated;
+        });
+      }
+    } catch (error) {
+      console.error('Failed to refresh user:', error);
+    }
   },
 
   logout: () => {

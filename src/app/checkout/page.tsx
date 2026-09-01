@@ -60,7 +60,7 @@ export default function CheckoutPage() {
 
     const loadProfile = async () => {
       try {
-        const res = (await api.get('/auth/me')) as {
+        const res = (await api.get('/profile')) as {
           data: {
             phoneNumber?: string;
             addresses?: Address[];

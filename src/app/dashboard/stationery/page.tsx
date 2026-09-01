@@ -51,7 +51,7 @@ export default function StationeryDashboardPage() {
   const loadData = async () => {
     try {
       const [userRes, ordersRes, catsRes] = await Promise.all([
-        api.get('/auth/me') as Promise<{ data: { stationery?: Stationery } }>,
+        api.get('/profile') as Promise<{ data: { stationery?: Stationery } }>,
         api.get('/orders') as Promise<{ data: Order[] }>,
         api.get('/products/categories') as Promise<{ data: Array<{ id: string; name: string }> }>,
       ]);

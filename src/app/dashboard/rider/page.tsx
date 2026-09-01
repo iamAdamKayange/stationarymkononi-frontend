@@ -36,7 +36,7 @@ export default function RiderDashboardPage() {
   const loadRiderData = async () => {
     try {
       const [meRes, activeRes, availRes] = await Promise.all([
-        api.get('/auth/me') as Promise<{ data: { riderProfile?: RiderProfile } }>,
+        api.get('/profile') as Promise<{ data: { riderProfile?: RiderProfile } }>,
         api.get('/deliveries/active') as Promise<{ data: Delivery }>,
         api.get('/deliveries/available') as Promise<{ data: Delivery[] }>,
       ]);
